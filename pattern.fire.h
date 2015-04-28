@@ -1,0 +1,1 @@
+void patternFire(uint8_t duration);

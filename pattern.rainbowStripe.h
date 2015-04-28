@@ -1,0 +1,1 @@
+void patternRainbowStripe(uint8_t duration);

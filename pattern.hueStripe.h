@@ -1,0 +1,1 @@
+void patternHueStripe(uint8_t duration);

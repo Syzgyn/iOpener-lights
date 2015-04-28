@@ -1,0 +1,1 @@
+void patternSnake(uint8_t duration);

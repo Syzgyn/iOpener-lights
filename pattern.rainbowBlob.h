@@ -1,0 +1,1 @@
+void patternRainbowBlob(uint8_t duration);
