@@ -2,7 +2,7 @@ void patternHueStripe(uint8_t duration)
 {
   uint8_t dir = random8(3);
 
-  helperHueStripe(duration, 2);
+  helperHueStripe(duration, dir);
 }
 
 void helperHueStripe(uint8_t duration, uint8_t dir)
@@ -20,7 +20,7 @@ void helperHueStripe(uint8_t duration, uint8_t dir)
         uint8_t hue = 0;
         if(dir == 0) //Horizontal
         {
-          hue = (uint8_t)(baseHue + ((cos((j * .125) + x) * swing) + range/2)) & 255;
+          hue = (uint8_t)(baseHue + ((cos(j * 0.125 + x) * swing) + range/2)) & 255;
         }
         else if(dir == 1) //Vertical
         {

@@ -12,13 +12,14 @@
 #include "pattern.snake.h"
 #include "pattern.hueStripe.h"
 #include "pattern.fire.h"
+#include "pattern.wholeRainbow.h"
 
 
 #define LED_PIN 13
 #define CHIPSET NEOPIXEL
 #define BRIGHTNESS 128
-#define NUM_PATTERNS 5
 #define MAX_DURATION 3
+
 
 #define COUNT(A) (sizeof(A) / sizeof((A)[0]))
 
@@ -33,8 +34,6 @@ CRGB* leds( leds_plus_safety_pixel + 1);
 // Param for different pixel layouts
 const bool kMatrixSerpentineLayout = true;
 
-
-
 //Declare pointer array
 typedef void (*functionArray[])(uint8_t duration);
 
@@ -42,10 +41,11 @@ typedef void (*functionArray[])(uint8_t duration);
 functionArray patterns = {
   patternRainbowBlob,   //0
   patternColorWipe,     //1
-  patternRainbowStripe, //2
-  patternSnake,         //3
-  patternHueStripe,    //4
-  patternFire,          //5
+  //patternRainbowStripe, //2
+  //patternSnake,         //3
+  patternHueStripe,     //4
+  //patternFire,          //5
+  patternWholeRainbow,  //6
 };
 
 //Should total to 100
@@ -53,10 +53,14 @@ uint8_t patternWeights[] = {
   10,
   10,
   10,
-  30,
-  40,
-  100,
+  25,
+
+  //25,
+  //25,
 };
+
+
+#define NUM_PATTERNS COUNT(patterns)
 
 void setup() {
   delay(1000); //Sanity Delay
@@ -67,7 +71,6 @@ void setup() {
   FastLED.setBrightness(BRIGHTNESS);
 
   Serial.begin(9600);
-  Serial.println(random8());
 }
 
 void loop()
@@ -75,14 +78,11 @@ void loop()
   random16_add_entropy(millis());
 
   //Pick a random pattern to use, and the duration it should go for
-  uint8_t index = weightedRandom();
+  uint8_t index = random(NUM_PATTERNS);//weightedRandom();
   uint8_t duration = random8(1, MAX_DURATION + 1);
-  Serial.println(index);
-  index = 1;
 
   Serial.println("New pattern: index " + String(index) + ", duration " + String(duration));
 
-  duration = 1;
   utilFadeToBlack();
   patterns[index](duration);
 }
@@ -96,4 +96,3 @@ void utilFadeToBlack()
   }
   FastLED.setBrightness(BRIGHTNESS);
 }
-

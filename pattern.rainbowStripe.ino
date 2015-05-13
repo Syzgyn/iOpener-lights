@@ -14,15 +14,15 @@ void helperRainbowDirection(uint8_t duration, uint8_t dir)
         uint8_t hue = 0;
         if(dir == 0) //Horizontal
         {
-          hue = ((y * 256 / kMatrixWidth) + j) & 255;
+          hue = ((y * 128 / kMatrixWidth) + (j/1)) & 255;
         }
         else if(dir == 1) //Vertical
         {
-          hue = ((x * 256 / kMatrixWidth) + j) & 255;
+          hue = ((x * 128 / kMatrixWidth) + (j/1)) & 255;
         }
         else if(dir == 2) //Diagonal
         {
-          hue = (((x + y) * 256 / kMatrixWidth) + j) & 255;
+          hue = (((x + y) * 128 / kMatrixWidth) + (j/1)) & 255;
         }
 
         leds[ XY(x, y)] = CHSV(hue, 255, 255);
