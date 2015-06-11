@@ -1,5 +1,6 @@
-void patternSnake(uint8_t duration)
+void patternSnake(Light light)
 {
+  uint8_t duration = 100;
   //This defines the pixels that make up the snake
   uint8_t snakes[3][7][2] = {
     {{random8(6),random8(6)},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}},
@@ -11,7 +12,7 @@ void patternSnake(uint8_t duration)
   uint8_t hue = random8();
 
   //Clear the LEDs
-  fill_solid(leds, NUM_LEDS, CHSV(hue, 255, 255));
+  fill_solid(light.leds, NUM_LEDS, CHSV(hue, 255, 255));
 
   uint16_t dur = duration * 500;
 
@@ -20,7 +21,7 @@ void patternSnake(uint8_t duration)
     for(uint8_t snake = 0; snake < COUNT(snakes); snake++)
     {
       //Black out the end of the snake
-      leds[XY(snakes[snake][len - 1][0], snakes[snake][len - 1][1])] = CHSV(hue, 255, 255);
+      light.leds[XY(snakes[snake][len - 1][0], snakes[snake][len - 1][1])] = CHSV(hue, 255, 255);
 
       //Move each segment of the snake back one
       for(uint8_t i = len - 1; i > 0; i--)
@@ -79,7 +80,7 @@ void patternSnake(uint8_t duration)
       for(uint8_t i = 0; i < len; i++)
       {
         //Range of 40 hue across all the snakes
-        leds[XY(snakes[snake][i][0], snakes[snake][i][1])] = CHSV((hue + ((40/(COUNT(snakes)-1))*(snake+1))) % 255, 255, 255);
+        light.leds[XY(snakes[snake][i][0], snakes[snake][i][1])] = CHSV((hue + ((40/(COUNT(snakes)-1))*(snake+1))) % 255, 255, 255);
       }
     }
 

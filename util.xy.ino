@@ -27,7 +27,7 @@ uint16_t XYbase( uint8_t x, uint8_t y)
 
 uint16_t XY( uint8_t x, uint8_t y)
 {
-  if( x >= kMatrixWidth) return -1;
-  if( y >= kMatrixHeight) return -1;
+  if( x >= kMatrixWidth) return 0;
+  if( y >= kMatrixHeight) return 0;
   return XYbase(x,y);
 }

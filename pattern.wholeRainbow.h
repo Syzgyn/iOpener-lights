@@ -1,1 +1,1 @@
-void patternWholeRainbow(uint8_t duration);
+void patternWholeRainbow(Light* light);

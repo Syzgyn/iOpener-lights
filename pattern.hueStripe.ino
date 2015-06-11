@@ -1,11 +1,12 @@
-void patternHueStripe(uint8_t duration)
+void patternHueStripe(Light* light)
 {
   uint8_t dir = random8(3);
+  uint8_t duration = 100;
 
-  helperHueStripe(duration, dir);
+  helperHueStripe(light, duration, dir);
 }
 
-void helperHueStripe(uint8_t duration, uint8_t dir)
+void helperHueStripe(Light* light, uint8_t duration, uint8_t dir)
 {
   const uint8_t range = 40;
   const uint8_t swing = range / 2;
@@ -31,7 +32,7 @@ void helperHueStripe(uint8_t duration, uint8_t dir)
           hue = (uint8_t)(baseHue + ((cos(j * 0.125 + x + y) * swing) + range/2)) & 255;
         }
 
-        leds[ XY(x, y)] = CHSV(hue, 255, 255);
+        light->leds[ XY(x, y)] = CHSV(hue, 255, 255);
       }
     }
 

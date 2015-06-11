@@ -1,10 +1,11 @@
-void patternRainbowStripe(uint8_t duration)
+void patternRainbowStripe(Light light)
 {
-  helperRainbowDirection(duration, random8(3));
+  helperRainbowDirection(light, random8(3));
 }
 
-void helperRainbowDirection(uint8_t duration, uint8_t dir)
+void helperRainbowDirection(Light light, uint8_t dir)
 {
+  uint8_t duration = 100;
   for(uint16_t j=0; j<256 * duration; j++)
   {
     for( byte y = 0; y < kMatrixHeight; y++)
@@ -25,7 +26,7 @@ void helperRainbowDirection(uint8_t duration, uint8_t dir)
           hue = (((x + y) * 128 / kMatrixWidth) + (j/1)) & 255;
         }
 
-        leds[ XY(x, y)] = CHSV(hue, 255, 255);
+        light.leds[ XY(x, y)] = CHSV(hue, 255, 255);
       }
     }
 

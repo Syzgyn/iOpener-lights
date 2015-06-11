@@ -1,0 +1,1 @@
+void utilEmptyFunction(Light light);

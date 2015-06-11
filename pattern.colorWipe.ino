@@ -1,9 +1,10 @@
-void patternColorWipe(uint8_t duration)
+void patternColorWipe(Light* light)
 {
-  helperColorWipe(duration, random8(2));     
+  uint8_t duration = 100;
+  helperColorWipe(light, duration, random8(2));     
 }
 
-void helperColorWipe(uint8_t duration, uint8_t dir)
+void helperColorWipe(Light* light, uint8_t duration, uint8_t dir)
 {
   uint8_t hue = random8();
 
@@ -17,11 +18,11 @@ void helperColorWipe(uint8_t duration, uint8_t dir)
         {
           if(dir == 0) //Horizontal
           {
-            leds[ XY(x, y)] = CHSV( hue, 255, 255);
+            light->leds[ XY(x, y)] = CHSV( hue, 255, 255);
           }
           else if(dir == 1) //Vertical
           {
-            leds[XY(y,x)] = CHSV(hue, 255, 255);
+            light->leds[XY(y,x)] = CHSV(hue, 255, 255);
           }
 
           FastLED.show();

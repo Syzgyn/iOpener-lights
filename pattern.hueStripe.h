@@ -1,1 +1,1 @@
-void patternHueStripe(uint8_t duration);
+void patternHueStripe(Light* light);

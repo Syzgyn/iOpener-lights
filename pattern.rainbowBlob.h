@@ -1,1 +1,1 @@
-void patternRainbowBlob(uint8_t duration);
+void patternRainbowBlob(Light* light);

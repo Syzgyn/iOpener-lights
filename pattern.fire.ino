@@ -1,5 +1,6 @@
-void patternFire(uint8_t duration)
+void patternFire(Light light)
 {
+  uint8_t duration = 100;
   byte COOLING = 55; //less = taller flames, more = shorter flames. recommended 20 - 100
   byte SPARKING = 120; //less = flickery fire, more = roaring fire. recommended 50 - 200
 
@@ -29,6 +30,6 @@ void patternFire(uint8_t duration)
     // Scale the heat value from 0-255 down to 0-240
     // for best results with color palettes.
     byte colorindex = scale8( heat[j], 240);
-    leds[j] = ColorFromPalette( palette, colorindex);
+    light.leds[j] = ColorFromPalette( palette, colorindex);
   } 
 }
