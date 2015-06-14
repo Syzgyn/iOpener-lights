@@ -4,6 +4,7 @@
 //Utilities
 #include "util.xy.h"
 #include "util.random.h"
+#include "util.task.h"
 #include "util.scheduler.h"
 
 //Tasks
@@ -68,11 +69,13 @@ uint8_t patternWeights[] = {
 };
 
 Light lights[NUM_LIGHTS];
-
+LightController lightController(lights);
 
 #define NUM_PATTERNS COUNT(patterns)
 
 void setup() {
+  Serial.begin(9600);
+  Serial.println("Start");
   delay(1000); //Sanity Delay 
   randomSeed(createTrulyRandomSeed());
   random16_add_entropy(random());
@@ -91,27 +94,34 @@ void setup() {
 
   for(uint8_t i = 0; i < NUM_LIGHTS; i++)
   {
+    Serial.println(i);
     lights[i] = Light(leds[i]);
     lights[i].updatePattern(patterns[random(NUM_PATTERNS)]);
   }
   
   FastLED.setBrightness(BRIGHTNESS);
-
-  Serial.begin(9600);
+  
+  Serial.println("End Setup");
 }
 
 void loop()
 {
-  random16_add_entropy(millis());
-
-  //Pick a random pattern to use, and the duration it should go for
-  uint8_t index = random(NUM_PATTERNS);//weightedRandom();
-  uint8_t duration = random8(1, MAX_DURATION + 1);
-
-  Serial.println("New pattern: index " + String(index) + ", duration " + String(duration));
-
-  //utilFadeToBlack();
-  //patterns[index](duration);
+  Task *tasks[] = {
+    &lights[0],
+    &lights[1],
+    &lights[2],
+    &lights[3],
+    &lights[4],
+    &lights[5],
+    &lights[6],
+    &lights[7],
+    &lights[8],
+    &lights[9],
+    &lightController
+  };
+  
+  TaskScheduler scheduler(tasks, COUNT(tasks));
+  scheduler.run();
 }
 
 void patternFadeToBlack(Light *light)

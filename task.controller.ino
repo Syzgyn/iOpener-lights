@@ -6,9 +6,9 @@
 // at 0, reset to 5, trigger individual patterns
 
 
-LightController::LightController(Light **_lights)
+LightController::LightController(Light *_lights)
 : TimedTask(millis()),
-lights(*_lights)
+lights(_lights)
 {
 	lastUpdate = millis();
 	groupCountdown = 5;

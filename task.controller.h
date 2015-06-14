@@ -7,7 +7,7 @@
 
 class LightController : public TimedTask {
 public:
-	LightController(Light **_lights);
+	LightController(Light *_lights);
 	virtual void run(uint32_t now);
 private:
 	Light *lights; //The lights

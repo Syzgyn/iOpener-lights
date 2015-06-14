@@ -18,11 +18,13 @@ newPattern(true)
 
 void Light::run(uint32_t now)
 {
-	currentFunction(this);
+	Serial.println("Running Light " + now);
+	//currentFunction(this);
 }
 
 void Light::updatePattern(funcPointer pattern)
 {
+	Serial.println("Setting Pattern");
 	newPattern = true;
 	currentFunction = pattern;
 }
