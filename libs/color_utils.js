@@ -123,8 +123,6 @@ module.exports = {
 			g = [t, v, v, q, p, p][i],
 			b = [p, p, t, v, v, q][i];
 
-		//console.log(h, s, v, r, g, b);
-
 		return [ r * 255, g * 255, b * 255 ];
 	},
 

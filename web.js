@@ -42,7 +42,7 @@ var www = function(settings)
 						self.io.sockets.emit(key, data);
 					}
 
-					console.log(key, data);
+					console.debug(key, data);
 
 					self.emitter.emit(key, data);
 				});
@@ -55,10 +55,8 @@ var www = function(settings)
 		var evt = this.emitter_events[i];
 		
 		(function(ref, evt){
-			console.log(evt);
-
 			self.emitter.on(evt, function(data){
-				console.log(evt, data);
+				console.debug(evt, data);
 				self.io.sockets.emit(evt, data);
 			});
 		})(this, evt);

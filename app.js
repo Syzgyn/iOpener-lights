@@ -13,35 +13,26 @@ try {
 	}
 };
 
+//Libraries
+require('./libs/misc_utils') 
+
 //Class declarations
 var Lantern = require('./lantern');
 var PatternController = require('./pattern-controller');
 var EventEmitter = require('events');
-var WebServer = require('./web.js');
-
-//Libraries
+var WebServer = require('./web');
 var OPC = require('./libs/opc');
-var client = new OPC(config.opc.host, config.opc.port);
 
 //local vars
 var NUM_LANTERNS = config.num_lanterns;
 var lanterns = [];
 
-Math.seed = function(s) {
-    return function() {
-		s = Math.sin(s) * 10000; return s - Math.floor(s);
-	};
-};
-
-var random1 = Math.seed(Date.now());
-var random2 = Math.seed(random1());
-Math.random = Math.seed(random2());
-Math.randomInt = function(min, max){
-	return Math.floor(Math.seed(random2())() * (max - min + 1)) + min;
-}
-
 //Create EventEmitter
 var emitter = new EventEmitter();
+emitter.setMaxListeners(NUM_LANTERNS + 2);
+
+//OPC client
+var client = new OPC(config.opc.host, config.opc.port);
 
 //Create Lanterns
 for(var i = 0; i < NUM_LANTERNS; i++)

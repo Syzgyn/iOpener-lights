@@ -28,7 +28,7 @@ OPC.prototype._reconnect = function()
     this.connected = false;
 
     this.socket.onclose = function() {
-        console.log("Connection closed");
+        console.debug("Connection closed");
         _this.socket = null;
         _this.connected = false;
     }
@@ -46,7 +46,7 @@ OPC.prototype._reconnect = function()
 	});
 
     this.socket.connect(this.port, this.host, function() {
-        console.log("Connected to " + _this.socket.remoteAddress);
+        console.debug("Connected to " + _this.socket.remoteAddress);
         _this.connected = true;
         _this.socket.setNoDelay();
     });
