@@ -1,4 +1,17 @@
-var IS_DEBUGGING = 1;
+//Load config file
+try {
+	var config = require('./config');
+} catch (ex) {
+	if(ex.code == 'MODULE_NOT_FOUND')
+	{
+		console.log("Config file not found.  Please copy default.config.js to config.js and make any changes");
+		process.exit();
+	}
+	else
+	{
+		throw ex;
+	}
+};
 
 //Class declarations
 var Lantern = require('./lantern');
@@ -8,10 +21,10 @@ var WebServer = require('./web.js');
 
 //Libraries
 var OPC = require('./libs/opc');
-var client = new OPC('localhost', 7890);
+var client = new OPC(config.opc.host, config.opc.port);
 
 //local vars
-var NUM_LANTERNS = 2;
+var NUM_LANTERNS = config.num_lanterns;
 var lanterns = [];
 
 Math.seed = function(s) {
@@ -33,7 +46,7 @@ var emitter = new EventEmitter();
 //Create Lanterns
 for(var i = 0; i < NUM_LANTERNS; i++)
 {
-	lanterns[i] = new Lantern({opc: client, emitter: emitter, channel: i + IS_DEBUGGING});
+	lanterns[i] = new Lantern({opc: client, emitter: emitter, channel: i + (config.debug == true ? 1 : 0)});
 	//lanterns[i].setPattern(pattern);
 }
 
@@ -41,7 +54,10 @@ for(var i = 0; i < NUM_LANTERNS; i++)
 var controller = new PatternController({emitter: emitter, lanterns: lanterns});
 
 //Create web front end
-var www = new WebServer({emitter: emitter});
+if(config.web.enabled)
+{
+	var www = new WebServer({emitter: emitter, port: config.web.port});
+}
 
 function lantern_loop()
 {
@@ -56,5 +72,5 @@ function controller_loop()
 	controller.tick();
 }
 
-setInterval(lantern_loop, 5);
-setInterval(controller_loop, 1000);
+setInterval(lantern_loop, config.lantern_loop_timer);
+setInterval(controller_loop, config.controller_loop_timer);

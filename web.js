@@ -2,6 +2,7 @@ var express = require('express');
 
 var www = function(settings)
 {
+	var port = settings.port || 3000;
 	this.emitter = settings.emitter;
 	this.patterns = require('./patterns').names;
 
@@ -9,16 +10,16 @@ var www = function(settings)
 	this.server = require('http').createServer(this.app);
 	this.io = require('socket.io').listen(this.server);
 
-	this.server.listen(3000);
+	this.server.listen(port);
 	this.app.use(express.static('www')); 
 
-	//Events that pass from emitter to socket
+	//Events that pass from event emitter to socket
 	this.emitter_events = [
 		'updateWeb',
 		'patternNames',
 	];
 
-	//Events that pass from socket to emitter
+	//Events that pass from socket to event emitter
 	//value is whether or not it should be re-emitted by the socket to other connections
 	this.socket_events = {
 		'controllerChangePattern': true,
