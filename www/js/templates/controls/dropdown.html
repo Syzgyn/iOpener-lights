@@ -1,0 +1,6 @@
+<select>
+	<% _.each(options, function(option){ %>
+	<option <% if(option == value){%>selected<%}%> value="<%= option %>"><%= option %></option>
+	<% }); %>
+</select>
+<%= value %>
