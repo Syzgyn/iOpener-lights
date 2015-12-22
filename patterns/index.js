@@ -1,10 +1,15 @@
 var patterns = [];
 var names = [];
-patterns.push(require('./colorWipe.js'));
-patterns.push(require('./snake.js'));
-patterns.push(require('./rainbowSparkle.js'));
-patterns.push(require('./wholeRainbow.js'));
 
+//Add all patterns here
+patterns.push(require('./colorWipe'));
+patterns.push(require('./snake'));
+patterns.push(require('./rainbowSparkle'));
+patterns.push(require('./wholeRainbow'));
+patterns.push(require('./hueStripe'));
+
+
+//Generate the pattern names
 for(var i in patterns)
 {
 	var p = new patterns[i]();
