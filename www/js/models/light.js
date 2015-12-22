@@ -6,14 +6,13 @@ define([
 	return Backbone.Model.extend({
 		defaults: {
 			current_pattern: 'Unknown Pattern',
-			available_patterns: [],
 		},
 
 		initialize: function(){
 			this.controls = new Controls();
 			this.pattern_select = new DropdownControl({
-				value: this.get('current_pattern'),
-				settings: {options: this.get('available_patterns')},
+				value: -1, 
+				label: false,
 			});
 
 			this.controls.bind('change', this.onControlChange, this);
@@ -24,15 +23,21 @@ define([
 		},
 
 		updateControls: function(data){
+			var index = this.pattern_select.get('options').indexOf(data.name);
+
 			this.set('current_pattern', data.name);
-			this.pattern_select.set('value', data.name);
-			console.log('light %s update', this.id, this.get('current_pattern'));
+			this.pattern_select.set('value', index);
+
+			console.log('Set Light %s to Pattern %s', this.id, data.name);
+
 			this.controls.setControls(data.controls);
 		},
 
 		updateNames: function(data){
-			this.set('available_patterns', data);
+			var index = data.indexOf(this.get('current_pattern'));
 			this.pattern_select.set('options', data);
+			this.pattern_select.set('value', index, {silent: true});
+			this.trigger('namesUpdated');
 		},
 
 		onControlChange: function(control)
@@ -51,8 +56,7 @@ define([
 
 		onPatternSelectChange: function(control){
 			this.trigger('namesUpdated');
-			var patterns = control.get('options');
-			var index = patterns.indexOf(control.get('value'));
+			var index = control.get('value');
 
 			if(index > -1)
 			{
@@ -66,6 +70,10 @@ define([
 
 		onPatternSelectListUpdate: function(){
 			this.trigger('namesUpdated');
+		},
+
+		hasContent: function(){
+			return this.get('current_pattern') !== 'Unknown Pattern';
 		},
 	});
 });

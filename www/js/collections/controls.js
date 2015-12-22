@@ -20,7 +20,6 @@ define([
 		},
 		
 		setControls: function(controls){
-			//console.log('setControls', controls);
 			var models = [];
 			_.each(controls, function(data){
 				switch(data.type)

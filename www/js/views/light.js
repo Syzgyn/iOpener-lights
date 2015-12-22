@@ -7,6 +7,8 @@ define([
 ], function($, _, Backbone, Template, DropdownView){
 	return Backbone.View.extend({
 		tagName: 'div',
+		className: 'light-container',
+
 		template: _.template(Template),
 
 		initialize: function()
@@ -16,6 +18,15 @@ define([
 		},
 
 		render: function(){
+			if(this.model.get('current_pattern') === 'Unknown Pattern')
+			{
+				this.$el.addClass('hide');
+			}
+			else
+			{
+				this.$el.removeClass('hide');
+			}
+
 			this.el.id = 'light-' + this.model.id;
 			var dropdown = new DropdownView({model: this.model.pattern_select});
 			this.$el.html(this.template(this.model.attributes));

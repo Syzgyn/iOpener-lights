@@ -17,8 +17,6 @@ define([
 			this.set({
 				options: settings.options || this.dropdown_defaults.options,
 			});
-
-			//this.on('change:value', function(){console.log('attrs', this.attributes);});
 		},
 	});
 });

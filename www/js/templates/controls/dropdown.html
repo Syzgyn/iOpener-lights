@@ -1,6 +1,6 @@
+<% if(label){ %><%= label %>: <%}%>
 <select>
-	<% _.each(options, function(option){ %>
-	<option <% if(option == value){%>selected<%}%> value="<%= option %>"><%= option %></option>
+	<% _.each(options, function(option, i){ %>
+	<option <% if(i == value){%>selected<%}%> value="<%= i %>"><%= option %></option>
 	<% }); %>
 </select>
-<%= value %>
