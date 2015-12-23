@@ -2,19 +2,11 @@ var util = require('util');
 var EventEmitter = require('events');
 var fs = require('fs');
 var colorUtils = require('./libs/color_utils');
-var Pattern = require('./patterns/pattern')
+var FlashPattern = require('./patterns').flash;
+var Pattern = require('./patterns/pattern');
 
 var Lantern = function(settings)
 {
-	//Optional arguments
-	/*
-	var args = [];
-	for(var i = 0; i < arguments.length; ++i)
-	{
-		args[i] = arguments[i];
-	}
-	*/
-
 	this.opc_client = settings.opc;
 	this.channel = settings.channel;
 	this.emitter = settings.emitter;
@@ -25,13 +17,12 @@ var Lantern = function(settings)
 	this.num_leds = 36;
 	this.pixelBuffer = null;
 
+	this.flashPattern = new FlashPattern();
+	this.is_flashing = false;
+
 	this.initBuffer();
 	this.initEvents();
-
-	//EventEmitter.call(this);
 }
-
-//util.inherits(Lantern, EventEmitter);
 
 Lantern.prototype.initBuffer = function()
 {
@@ -70,6 +61,13 @@ Lantern.prototype.initEvents = function()
 	this.emitter.on('newConnection', function(){
 		self.sendWebData();
 	});
+
+	this.emitter.on('ping', function(data){
+		if(data.channel == self.channel)
+		{
+			self.ping();
+		}
+	});
 }
 
 Lantern.prototype.tick = function()
@@ -77,6 +75,13 @@ Lantern.prototype.tick = function()
 	if(this.currentPattern instanceof Pattern)
 	{
 		this.currentPattern.tick();
+	}
+
+	if(this.is_flashing)
+	{
+		this.flashPattern.tick();
+
+		this.is_flashing = this.flashPattern.isActive();
 	}
 }
 
@@ -127,29 +132,46 @@ Lantern.prototype.mapPixels = function()
     var unused = [0, 0, 0];     // Color for unused channels (null model)
 
     for (var i = 0; i < this.model.length; i++) {
+		var current_rgb = [
+			this.pixelBuffer[offset],
+			this.pixelBuffer[offset + 1],
+			this.pixelBuffer[offset + 2]
+		];
         var led = this.model[i];
         var rgb = led ? shader(led, i) : unused;
 
-		//Give the option to pass false through the shader to not set a color for this pixel, keeping it the same as what it was previously 
-		if(rgb !== false)
+		//Give the option to pass false through the shader to not set 
+		//a color for this pixel, keeping it the same as what it was previously 
+		if(rgb == false)
 		{
-			//Do pixel shading here if the pattern wants, rather than
-			//implementing it in each pattern separately
-			if(this.currentPattern.use_gradient === true)
-			{
-				var old_rgb = [
-					this.pixelBuffer[offset],
-					this.pixelBuffer[offset + 1],
-					this.pixelBuffer[offset + 2]
-				];
-
-				rgb = colorUtils.gradient(old_rgb, rgb, parseFloat(this.currentPattern.FPS) / 170); 
-			}
-
-			this.pixelBuffer.writeUInt8(Math.max(0, Math.min(255, rgb[0] | 0)), offset);
-			this.pixelBuffer.writeUInt8(Math.max(0, Math.min(255, rgb[1] | 0)), offset + 1);
-			this.pixelBuffer.writeUInt8(Math.max(0, Math.min(255, rgb[2] | 0)), offset + 2);
+			rgb = current_rgb;
 		}
+
+		//Hacky way to overlay the flash pattern when needed 
+		if(this.is_flashing)
+		{
+			var flash_shader = this.flashPattern.shader.bind(this.flashPattern);
+			var flash_rgb = led ? flash_shader(led, i) : unused;
+
+			rgb = [
+				rgb[0] + flash_rgb[0],
+				rgb[1] + flash_rgb[1],
+				rgb[2] + flash_rgb[2],
+			];
+
+			//console.log(rgb);
+		}
+
+		//Do pixel shading here if the pattern wants, rather than
+		//implementing it in each pattern separately
+		if(this.currentPattern.use_gradient === true)
+		{
+			rgb = colorUtils.gradient(current_rgb, rgb, parseFloat(this.currentPattern.FPS) / 170); 
+		}
+
+		this.pixelBuffer.writeUInt8(Math.max(0, Math.min(255, rgb[0] | 0)), offset);
+		this.pixelBuffer.writeUInt8(Math.max(0, Math.min(255, rgb[1] | 0)), offset + 1);
+		this.pixelBuffer.writeUInt8(Math.max(0, Math.min(255, rgb[2] | 0)), offset + 2);
         offset += 3;
     }
 
@@ -160,6 +182,12 @@ Lantern.prototype.getPixelValue = function(i)
 {
 	var offset = i * 3 + 4;
 	return [this.pixelBuffer[offset], this.pixelBuffer[offset+1], this.pixelBuffer[offset+2]];
+}
+
+Lantern.prototype.ping = function()
+{
+	this.is_flashing = true;
+	this.flashPattern.reset();
 }
 
 module.exports = Lantern;

@@ -25,6 +25,7 @@ var www = function(settings)
 		'controllerChangePattern': true,
 		'propertyChange': true,
 		'newConnection': false,
+		'ping': false,
 	};
 
 	var self = this;

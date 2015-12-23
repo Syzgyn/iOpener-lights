@@ -9,7 +9,6 @@ patterns.push(require('./wholeRainbow'));
 patterns.push(require('./hueStripe'));
 patterns.push(require('./rainbowStripe'));
 
-
 //Generate the pattern names
 for(var i in patterns)
 {
@@ -21,3 +20,6 @@ for(var i in patterns)
 
 module.exports.patterns = patterns;
 module.exports.names = names;
+
+//Flash is a special pattern used when pinging a lantern, so users can see which one it is
+module.exports.flash = require('./flash');

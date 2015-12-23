@@ -1,4 +1,5 @@
 var config = require('./config');
+var patterns = require('./patterns');
 
 var Controller = function(settings)
 {
@@ -6,8 +7,8 @@ var Controller = function(settings)
 	this.emitter = settings.emitter;
 	this.lanterns = settings.lanterns;
 
-	this.patterns = require('./patterns').patterns;
-	this.pattern_names = require('./patterns').names;
+	this.patterns = patterns.patterns;
+	this.pattern_names = patterns.names;
 
 	this.timers = [];
 
@@ -42,7 +43,7 @@ Controller.prototype.tick = function()
 			var pattern_num = Math.randomInt(0, this.patterns.length - 1);
 			var duration = Math.randomInt(20,40);
 
-			if(config.debug.enabled && !isNaN(config.debug.restrict_pattern))
+			if(config.debug.enabled && !isNaN(parseInt(config.debug.restrict_pattern)))
 			{
 				pattern_num = config.debug.restrict_pattern;
 			}

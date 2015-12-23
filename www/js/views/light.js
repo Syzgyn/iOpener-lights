@@ -11,6 +11,10 @@ define([
 
 		template: _.template(Template),
 
+		events: {
+			'click input.ping': 'pingClick',
+		},
+
 		initialize: function()
 		{
 			this.listenTo(this.model, 'controlsUpdated', this.render);
@@ -38,6 +42,10 @@ define([
 			}, this);
 
 			return this;
+		},
+
+		pingClick: function(e){
+			this.model.ping();
 		},
 	});
 });

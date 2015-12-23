@@ -75,5 +75,9 @@ define([
 		hasContent: function(){
 			return this.get('current_pattern') !== 'Unknown Pattern';
 		},
+
+		ping: function(){
+			window.socket.emit('ping', {channel: this.get('id')});
+		},
 	});
 });
