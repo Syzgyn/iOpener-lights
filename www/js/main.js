@@ -5,6 +5,7 @@ require.config({
 		underscore: 'libs/underscore/underscore',
 		socket: '../socket.io/socket.io',
 		text: 'libs/require/text',
+		config: 'libs/config',
 	},
 });
 

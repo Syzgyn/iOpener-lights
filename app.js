@@ -48,7 +48,7 @@ var controller = new PatternController({emitter: emitter, lanterns: lanterns});
 //Create web front end
 if(config.web.enabled)
 {
-	var www = new WebServer({emitter: emitter, port: config.web.port});
+	var www = new WebServer({emitter: emitter});
 }
 
 function lantern_loop()

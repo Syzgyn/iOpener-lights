@@ -1,8 +1,9 @@
 var express = require('express');
+var config = require('./config');
 
 var www = function(settings)
 {
-	var port = settings.port || 3000;
+	var port = config.web.port || 3000;
 	this.emitter = settings.emitter;
 	this.patterns = require('./patterns').names;
 
@@ -12,6 +13,9 @@ var www = function(settings)
 
 	this.server.listen(port);
 	this.app.use(express.static('www')); 
+	this.app.get('/js/libs/config.json', function(req, res){
+		res.send(JSON.stringify(config));
+	});
 
 	//Events that pass from event emitter to socket
 	this.emitter_events = [

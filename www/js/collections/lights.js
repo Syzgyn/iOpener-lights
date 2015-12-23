@@ -3,25 +3,20 @@ define([
 	'underscore', 
 	'backbone',
 	'models/light',
-], function($, _, Backbone, LightModel){
+	'text!config.json',
+], function($, _, Backbone, LightModel, configJson){
 	var lights = Backbone.Collection.extend({
 		model: LightModel,
 
 		initialize: function(){
-			this.add([
-				{id: 1},
-				{id: 2},
-				{id: 3},
-				{id: 4},
-				{id: 5},
-				{id: 6},
-				{id: 7},
-				{id: 8},
-				{id: 9},
-				{id: 10},
-				{id: 11},
-				{id: 12},
-			]);
+			var config = JSON.parse(configJson)
+			var offset = config.debug.enabled == true ? config.debug.channel_offset : 0;
+			var num_lanterns = config.num_lanterns;
+
+			for(var i = 0; i < num_lanterns; i++)
+			{
+				this.add({id: i + offset});
+			}
 		},
 	});
 
