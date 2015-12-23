@@ -20,7 +20,7 @@ Math.randomInt = function(min, max) {
 //Debugging output
 console.debug = function()
 {
-	if(!config.debug)
+	if(!config.debug.enabled)
 	{
 		return;
 	}
@@ -31,5 +31,5 @@ console.debug = function()
         args[i] = arguments[i];
     }
 
-	console.log(args);
+	console.log.apply(console, args);
 }

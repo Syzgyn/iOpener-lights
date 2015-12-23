@@ -1,3 +1,5 @@
+var config = require('./config');
+
 var Controller = function(settings)
 {
 	var self = this;
@@ -39,6 +41,12 @@ Controller.prototype.tick = function()
 		{
 			var pattern_num = Math.randomInt(0, this.patterns.length - 1);
 			var duration = Math.randomInt(20,40);
+
+			if(config.debug.enabled && !isNaN(config.debug.restrict_pattern))
+			{
+				pattern_num = config.debug.restrict_pattern;
+			}
+
 			this.setPattern(i, this.patterns[pattern_num], duration);
 			console.debug('change pattern: light %s to %s for duration %s', i, this.pattern_names[pattern_num], duration);
 		}

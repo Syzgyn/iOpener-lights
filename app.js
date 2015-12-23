@@ -37,7 +37,8 @@ var client = new OPC(config.opc.host, config.opc.port);
 //Create Lanterns
 for(var i = 0; i < NUM_LANTERNS; i++)
 {
-	lanterns[i] = new Lantern({opc: client, emitter: emitter, channel: i + (config.debug == true ? 1 : 0)});
+	var offset = config.debug.enabled ? config.debug.channel_offset : 0;
+	lanterns[i] = new Lantern({opc: client, emitter: emitter, channel: i + offset}); 
 	//lanterns[i].setPattern(pattern);
 }
 
