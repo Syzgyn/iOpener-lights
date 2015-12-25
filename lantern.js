@@ -43,10 +43,10 @@ Lantern.prototype.initBuffer = function()
 Lantern.prototype.initEvents = function()
 {
 	var self = this;
-	this.emitter.on('lightChangePattern', function(channel, pattern){
+	this.emitter.on('lightChangePattern', function(channel, pattern, settings){
 		if(channel == self.channel)
 		{
-			self.setPattern(pattern);
+			self.setPattern(pattern, settings);
 		}
 	});
 
@@ -100,7 +100,16 @@ Lantern.prototype.sendWebData = function()
 Lantern.prototype.setPattern = function(pattern)
 {
 	var self = this;
-	this.currentPattern = new pattern();
+	if(this.currentPattern)
+	{
+		this.currentPattern.removeAllListeners('render').removeAllListeners('getColor');
+	}
+
+	this.currentPattern = pattern; 
+	this.currentPattern.channel = this.channel;
+
+	this.currentPattern.init();
+
 	this.currentPattern.on('render', this.mapPixels.bind(this));
 	this.currentPattern.on('getColor', function(i){
 		self.currentPattern.emit('pixelValue', self.getPixelValue(i));

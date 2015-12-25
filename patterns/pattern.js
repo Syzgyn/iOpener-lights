@@ -13,6 +13,8 @@ var Pattern = function(){
 	this.use_gradient = false;		//If the pattern wants pixel transitions to be smooth
 	this.requested_pixel = [0,0,0]; //The latest requested pixel via getCurrentColor(num)
 
+	this.channel = 0;
+
 	this.web_settings = {};
 
 	this.settings = { 
@@ -45,6 +47,15 @@ var Pattern = function(){
 }
 
 util.inherits(Pattern, EventEmitter);
+
+/**
+* Should be called by the lantern after being assigned.
+* Used to init anything necessary after any variables are
+* assigned externally.
+*/
+Pattern.prototype.init = function()
+{
+}
 
 /**
 * Called every loop of the main app, checks if we should 

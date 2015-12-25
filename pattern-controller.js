@@ -1,5 +1,6 @@
 var config = require('./config');
-var patterns = require('./patterns');
+var pattern_lib = require('./patterns');
+var clone = require('clone');
 
 var Controller = function(settings)
 {
@@ -7,8 +8,7 @@ var Controller = function(settings)
 	this.emitter = settings.emitter;
 	this.lanterns = settings.lanterns;
 
-	this.patterns = patterns.patterns;
-	this.pattern_names = patterns.names;
+	this.group_timer = config.patterns.group.start_time;
 
 	this.timers = [];
 
@@ -22,34 +22,45 @@ var Controller = function(settings)
 	});
 
 	this.emitter.on('controllerChangePattern', function(data){
-		var duration = Math.randomInt(20, 40);
-		self.setPattern(data.channel, self.patterns[data.pattern], duration);
+		var duration = Math.randomInt(config.patterns.min, config.patterns.max);
+		var pattern = new pattern_lib.patterns[data.pattern]();
+		self.setPattern(data.channel, pattern, duration);
 	});
 }
 
 Controller.prototype.sendPatternNames = function(){
-	var names = this.pattern_names;
+	var names = pattern_lib.names;
 	this.emitter.emit('patternNames', names);
 }
 
 Controller.prototype.tick = function()
 {
+	this.group_timer--;
+
+	if(this.group_timer <= 0)
+	{
+		this.setGroupPattern();
+		return;
+	}
+
 	for(var i in this.timers)
 	{
 		this.timers[i]--;
 		
 		if(this.timers[i] <= 0)
 		{
-			var pattern_num = Math.randomInt(0, this.patterns.length - 1);
-			var duration = Math.randomInt(20,40);
+			var pattern_num = Math.randomInt(0, pattern_lib.patterns.length - 1);
+			var duration = Math.randomInt(config.patterns.min, config.patterns.max);
 
 			if(config.debug.enabled && !isNaN(parseInt(config.debug.restrict_pattern)))
 			{
 				pattern_num = config.debug.restrict_pattern;
 			}
 
-			this.setPattern(i, this.patterns[pattern_num], duration);
-			console.debug('change pattern: light %s to %s for duration %s', i, this.pattern_names[pattern_num], duration);
+			var pattern = new pattern_lib.patterns[pattern_num]();
+
+			this.setPattern(i, pattern, duration);
+			console.debug('change pattern: light %s to %s for duration %s', i, pattern_lib.names[pattern_num], duration);
 		}
 	}
 }
@@ -58,6 +69,21 @@ Controller.prototype.setPattern = function(light, pattern, duration)
 {
 	this.emitter.emit('lightChangePattern', light, pattern); 
 	this.timers[light] = duration;
+}
+
+Controller.prototype.setGroupPattern = function()
+{
+	var duration = Math.randomInt(20,40);
+	var pattern_num  = Math.randomInt(0, pattern_lib.group.patterns.length - 1);
+	var pattern = new pattern_lib.group.patterns[pattern_num]();
+
+	for(var i in this.timers)
+	{
+		var p = clone(pattern);
+		this.setPattern(i, p, duration);
+	}
+
+	this.group_timer = Math.randomInt(config.patterns.group.min, config.patterns.group.max);
 }
 
 module.exports = Controller;

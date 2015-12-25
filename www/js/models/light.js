@@ -26,7 +26,7 @@ define([
 			var index = this.pattern_select.get('options').indexOf(data.name);
 
 			this.set('current_pattern', data.name);
-			this.pattern_select.set('value', index);
+			this.pattern_select.set('value', index, {silent: true});
 
 			console.log('Set Light %s to Pattern %s', this.id, data.name);
 
@@ -64,6 +64,7 @@ define([
 					channel: this.get('id'), 
 					pattern: index,
 				}
+				console.log("I am changing the pattern", data);
 				window.socket.emit('controllerChangePattern', data);
 			}
 		},

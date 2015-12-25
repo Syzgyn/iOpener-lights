@@ -1,6 +1,7 @@
 var patterns = [];
 var names = [];
 
+
 //Add all patterns here
 patterns.push(require('./colorWipe'));
 patterns.push(require('./snake'));
@@ -20,6 +21,9 @@ for(var i in patterns)
 
 module.exports.patterns = patterns;
 module.exports.names = names;
+
+//Grab all the group patterns separately
+module.exports.group = require('./group');
 
 //Flash is a special pattern used when pinging a lantern, so users can see which one it is
 module.exports.flash = require('./flash');
