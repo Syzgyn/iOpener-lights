@@ -11,7 +11,7 @@ var Stripe = function(settings)
 	this.direction = Math.randomInt(0,2);
 
 	this.range = 40;
-	this.swing = this.range / 3;
+	this.swing = this.range / 2;
 
 	this.offset = 0;
 
