@@ -20,12 +20,15 @@ require('./libs/misc_utils')
 var Lantern = require('./lantern');
 var PatternController = require('./pattern-controller');
 var EventEmitter = require('events');
+var fs = require('fs');
 var WebServer = require('./web');
 var OPC = require('./libs/opc');
 
 //local vars
 var NUM_LANTERNS = config.num_lanterns;
 var lanterns = [];
+
+var tent_model = JSON.parse(fs.readFileSync('layouts/tent.json'));
 
 //Create EventEmitter
 var emitter = new EventEmitter();
@@ -38,7 +41,12 @@ var client = new OPC(config.opc.host, config.opc.port);
 for(var i = 0; i < NUM_LANTERNS; i++)
 {
 	var offset = config.debug.enabled ? config.debug.channel_offset : 0;
-	lanterns[i] = new Lantern({opc: client, emitter: emitter, channel: i + offset}); 
+	lanterns[i] = new Lantern({
+		opc: client, 
+		emitter: emitter, 
+		channel: i + offset, 
+		tent_offset: tent_model[i],
+	}); 
 	//lanterns[i].setPattern(pattern);
 }
 

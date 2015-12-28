@@ -13,6 +13,8 @@ var Lantern = function(settings)
 	this.patternEmitter = new EventEmitter();
 
 	this.model = JSON.parse(fs.readFileSync('layouts/sphere.json'));
+
+	this.tent_offset = settings.tent_offset;
 	this.currentPattern = null; 
 	this.num_leds = 36;
 	this.pixelBuffer = null;
@@ -147,7 +149,7 @@ Lantern.prototype.mapPixels = function()
 			this.pixelBuffer[offset + 2]
 		];
         var led = this.model[i];
-        var rgb = led ? shader(led, i) : unused;
+        var rgb = led ? shader(led, i, this.tent_offset) : unused;
 
 		//Give the option to pass false through the shader to not set 
 		//a color for this pixel, keeping it the same as what it was previously 
