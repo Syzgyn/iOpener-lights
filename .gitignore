@@ -5,3 +5,5 @@ config.js
 config.ini
 *.pyc
 logs/*
+build
+*.so

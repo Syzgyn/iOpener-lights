@@ -16,7 +16,7 @@ class Pattern(object):
 
 		if self.time > 1 / self.FPS:
 		#while self.time > 1 / self.FPS:
-			print("%s %s / %s" % (self.channel, self.time, 1 / self.FPS))
+#			print("%s %s / %s" % (self.channel, self.time, 1 / self.FPS))
 			self.update()
 			self.time -= 1 / self.FPS
 

@@ -21,7 +21,7 @@ class patternController(object):
 	def tick(self, dt):
 		self.time += dt
 		if(self.time >= 1):
-			logger.debug("Pattern Tick %s" % self.time)
+#			logger.debug("Pattern Tick %s" % self.time)
 			self.update()
 			self.time -= 1.0
 		

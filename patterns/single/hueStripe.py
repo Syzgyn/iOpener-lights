@@ -13,18 +13,18 @@ class HueStripe(pattern.Pattern):
 		self.speed = float(random.randint(10, 60))
 		self.direction = random.randint(0, 2)
 
-		self.range = 40
+		self.range = 60
 		self.swing = self.range / 2.0
 
 		self.offset = 0;
 
 	def update(self):
-		self.offset += self.speed / 100.0
+		self.offset += self.speed / 500.0 
 
 	def shader(self, coords, led_num):
 		dir_var = coords[self.direction]
 		
-		hue = (self.hue + ((cos(self.offset * 0.125 + dir_var) * self.swing) + self.range / 2)) % 360
+		hue = (self.hue + ((cos(self.offset + dir_var * 3) * self.swing) + self.range / 2)) % 360
 
 		return map(lambda x: x * 255 % 256, hsvToRGB(hue, 1, 1))
 
