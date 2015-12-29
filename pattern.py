@@ -3,19 +3,22 @@ import numpy
 
 class Pattern(object):
 	def __init__(self, channel=0):
-		self.FPS = 30
-		self.start_time = time.time()
+		self.FPS = 30.0
+		self.time = 0.0 
 		self.last_run = 0
 		self.use_gradient = False
 		self.channel = channel
 
 		self.controls = {}
 
-	def tick(self):
-		elapsed = time.time() - self.last_run
-		if(self.FPS == False or elapsed > 1 / self.FPS):
+	def tick(self, dt):
+		self.time += dt
+
+		if self.time > 1 / self.FPS:
+		#while self.time > 1 / self.FPS:
+			print("%s %s / %s" % (self.channel, self.time, 1 / self.FPS))
 			self.update()
-			self.last_run = time.time()
+			self.time -= 1 / self.FPS
 
 	def update(self):
 		pass

@@ -1,3 +1,4 @@
+import time
 import random
 import logging
 
@@ -7,6 +8,8 @@ logger = logging.getLogger('iopener')
 
 class patternController(object):
 	def __init__(self, lanterns = []):
+		self.time = 0 
+
 		self.lanterns = lanterns
 
 		self.timers = [0 for l in self.lanterns]
@@ -15,7 +18,15 @@ class patternController(object):
 
 		random.seed()
 	
-	def tick(self):
+	def tick(self, dt):
+		self.time += dt
+		if(self.time >= 1):
+			logger.debug("Pattern Tick %s" % self.time)
+			self.update()
+			self.time -= 1.0
+		
+
+	def update(self):
 		for i, timer in enumerate(self.timers):
 			self.timers[i] -= 1
 
@@ -24,7 +35,7 @@ class patternController(object):
 
 	def changePattern(self, i):
 		pattern_class, pattern_name = patterns.randomPattern()
-		pattern = pattern_class()
+		pattern = pattern_class(channel = self.lanterns[i].channel)
 		duration = random.randint(20, 40)
 
 		self.lanterns[i].setPattern(pattern)

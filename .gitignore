@@ -4,4 +4,4 @@ tests
 config.js
 config.ini
 *.pyc
-
+logs/*

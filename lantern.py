@@ -47,9 +47,9 @@ class Lantern(object):
 	def writePixels(self):
 		self.opc.putPixels(self.channel, self.pixel_buffer)
 
-	def tick(self):
+	def tick(self, dt):
 		if self.current_pattern:
-			self.current_pattern.tick()
+			self.current_pattern.tick(dt)
 		#Render
 		self.render()
 

@@ -67,6 +67,7 @@ class iOpenerServer(liblo.Server):
 		logger.info('action="init_server", port="%s", client_port="%s"',
 					port, client_port)
 
+		self.time = time.time()
 
 		#Allow broadcast to clients
 		self.socket = socket.fromfd(self.fileno(), socket.AF_INET, socket.SOCK_DGRAM)
@@ -87,23 +88,45 @@ class iOpenerServer(liblo.Server):
 		#pattern controller
 		self.controller = patternController.patternController(lanterns=self.lanterns)
 
-	def lanternLoop(self):
+	def advanceTime(self):
+		now = time.time()
+		dt = now - self.time
+		dt_ideal = 1.0 / 30
+		
+		if dt > dt_ideal * 2:
+			self.time = now
+			output_dt = dt
+		else:
+			self.time += dt_ideal
+			output_dt = dt_ideal
+		
+		#if dt < dt_ideal:
+		#	time.sleep(dt_ideal - dt)
+		
+		return output_dt
+
+	def drawFrame(self, dt):
+		self.controller.tick(dt)
 		for lantern in self.lanterns:
-			lantern.tick()
-			
+			lantern.tick(dt)
+		
+
+	def lanternLoop(self):
+		pass
+		
 	def controllerLoop(self):
-		self.controller.tick()
+		pass
 
 	def start(self):
-		perpetualTimer.perpetualTimer(
-			parser.getfloat('app', 'lantern_loop_timer'), 
-			self.lanternLoop).start()
-		perpetualTimer.perpetualTimer(
-			parser.getfloat('app', 'controller_loop_timer'),
-			self.controllerLoop).start()
+		#perpetualTimer.perpetualTimer(
+		#	parser.getfloat('app', 'lantern_loop_timer'), 
+		#	self.lanternLoop).start()
+		#perpetualTimer.perpetualTimer(
+		#	parser.getfloat('app', 'controller_loop_timer'),
+		#	self.controllerLoop).start()
 
 		while True:
-			pass
+			self.drawFrame(self.advanceTime())
 
 if __name__ == "__main__":
 	try:
