@@ -100,8 +100,8 @@ class iOpenerServer(liblo.Server):
 			self.time += dt_ideal
 			output_dt = dt_ideal
 		
-		#if dt < dt_ideal:
-		#	time.sleep(dt_ideal - dt)
+		if dt < dt_ideal:
+			time.sleep(dt_ideal - dt)
 		
 		return output_dt
 

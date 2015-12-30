@@ -3,6 +3,8 @@ import pattern
 from utils.color_utils import hsvToRGB
 from math import cos
 
+from ..shader import hueStripe
+
 from patterns.single import registerPattern 
 
 class HueStripe(pattern.Pattern):
@@ -21,12 +23,8 @@ class HueStripe(pattern.Pattern):
 	def update(self):
 		self.offset += self.speed / 500.0 
 
-	def shader(self, coords, led_num):
-		dir_var = coords[self.direction]
-		
-		hue = (self.hue + ((cos(self.offset + dir_var * 3) * self.swing) + self.range / 2)) % 360
+	def shader(self, coords):
+		return hueStripe(coords, self.hue, self.offset, self.direction, self.swing, self.range)
 
-		return map(lambda x: x * 255 % 256, hsvToRGB(hue, 1, 1))
 
 registerPattern(HueStripe, "Hue Stripe")
-

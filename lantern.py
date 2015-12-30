@@ -61,10 +61,6 @@ class Lantern(object):
 		if self.current_pattern is None:
 			return
 
-		for i, current_rgb in enumerate(self.pixel_buffer):
-			coords = self.layout.points[i]
-			r, g, b = self.current_pattern.shader(coords, i) if coords is not None else (0,0,0)
-			self.pixel_buffer[i] = (r, g, b)
-
+		self.pixel_buffer = self.current_pattern.shader(self.layout.packed);
 		self.writePixels()
 
