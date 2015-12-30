@@ -40,4 +40,4 @@ class patternController(object):
 		self.lanterns[i].setPattern(pattern)
 		self.timers[i] = duration 
 
-		logger.debug("change pattern for lantern %s to pattern %s for %s" % (i, pattern_name, duration))
+		logger.debug("change pattern for lantern %s to pattern %s for %s" % (self.lanterns[i].channel, pattern_name, duration))

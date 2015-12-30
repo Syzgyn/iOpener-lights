@@ -11,6 +11,7 @@ typedef struct {
 	const float swing;
 	const float range;
 	const float offset;
+	const int current_led;
 	int pixelCount;
 } ShaderArgs_t;
 
@@ -272,10 +273,102 @@ static PyObject* py_render_rainbowStripe(PyObject* self, PyObject* args)
     return result;
 }
 
+/*
+ * COLOR WIPE
+ */
+inline static void ALWAYS_INLINE render_colorWipe(ShaderArgs_t args, char *pixels)
+{
+	for(int pixel = 0; pixel < args.pixelCount; pixel++)
+	{
+		int x, y, i;
+
+		if(args.direction == 1)
+		{
+			x = pixel % 6;
+			y = floor(pixel/ 6);
+		}
+		else if(args.direction == 2 || args.direction == 3)
+		{
+			y = pixel % 6;
+			x = floor(pixel / 6);
+		}
+
+		if(args.direction == 3 && x % 2 == 1)
+		{
+			y = 5 - y;
+		}
+
+		if(args.direction == 0)
+		{
+			i = pixel;
+		}
+		else if(y % 2 == 1)
+		{
+			i = y * 6 + 5 - x;
+		}
+		else
+		{
+			i = y * 6 + x;
+		}
+
+		if(i <= args.current_led)
+		{
+			rgb output;
+			hsv input;
+			input.h = args.hue;
+			input.s = 1.0;
+			input.v = 1.0;
+
+			output = hsv2rgb(input);
+
+			pixels[0] = packChannel(output.r);
+			pixels[1] = packChannel(output.g);
+			pixels[2] = packChannel(output.b);
+		}
+		else
+		{
+			pixels[0] = 0;
+			pixels[1] = 0;
+			pixels[2] = 0;
+		}
+        pixels += 3;
+    }
+}
+
+static PyObject* py_render_colorWipe(PyObject* self, PyObject* args)
+{
+	ShaderArgs_t sa;
+	int modelBytes;
+    Py_ssize_t tmp;
+    char *pixels;
+    PyObject *result = NULL;
+
+	
+    if (!PyArg_ParseTuple(args, "t#fnn:render_colorWipe",
+        &sa.model, &modelBytes, &sa.hue, &sa.direction, &sa.current_led)){
+        return NULL;
+    }
+
+    if (modelBytes % 12) {
+        PyErr_SetString(PyExc_ValueError, "Model string is not a multiple of 12 bytes long");
+        return NULL;
+    }
+    sa.pixelCount = modelBytes / 12;
+
+    result = PyBuffer_New(sa.pixelCount * 3);
+    if (result) {
+        PyObject_AsWriteBuffer(result, (void**) &pixels, &tmp);
+        render_colorWipe(sa, pixels);
+    }
+
+    return result;
+}
+
 static PyMethodDef pattern_functions[] = {
 	{"solidRainbow", py_render_solidRainbow, METH_VARARGS, "Render solidRainbow"},
 	{"hueStripe", py_render_hueStripe, METH_VARARGS, "Render HueStripe"},
 	{"rainbowStripe", py_render_rainbowStripe, METH_VARARGS, "Render rainbowStripe"},
+	{"colorWipe", py_render_colorWipe, METH_VARARGS, "Render colorWipe"},
 	{NULL}
 };
 
