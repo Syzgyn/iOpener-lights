@@ -102,12 +102,14 @@ inline static rgb hsv2rgb(hsv in)
 #include "rainbowStripe/shader.c"
 #include "hueStripe/shader.c"
 #include "solidRainbow/shader.c"
+#include "rainbowSparkle/shader.c"
 
 static PyMethodDef pattern_functions[] = {
 	{"solidRainbow", py_render_solidRainbow, METH_VARARGS, "Render solidRainbow"},
 	{"hueStripe", py_render_hueStripe, METH_VARARGS, "Render HueStripe"},
 	{"rainbowStripe", py_render_rainbowStripe, METH_VARARGS, "Render rainbowStripe"},
 	{"colorWipe", py_render_colorWipe, METH_VARARGS, "Render colorWipe"},
+	{"rainbowSparkle", py_render_rainbowSparkle, METH_VARARGS, "Render rainbowSparkle"},
 	{NULL}
 };
 
