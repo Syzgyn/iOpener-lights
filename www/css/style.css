@@ -1,3 +1,7 @@
+* {
+	box-sizing: border-box;
+}
+
 body {
 	text-align: center;
 	margin-top: 50px;
@@ -7,6 +11,7 @@ body {
 input[type=range]{
 	-webkit-appearance: none;
 	width: 80%;
+	margin: 13px 0px;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
@@ -36,4 +41,12 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 div.light-container.hide {
 	display: none;
+}
+
+div.light-container {
+	border: 1px solid #000;
+	padding: 10px;
+	float: left;
+	width: 48%;
+	margin: 1%;
 }

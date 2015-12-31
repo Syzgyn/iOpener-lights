@@ -33,6 +33,11 @@ define([
 			this.controls.setControls(data.controls);
 		},
 
+		updateControlProperty: function(data){
+			var control = this.controls.find(function(c){return c.get('property') == data.property;});
+			control.set('value', data.value);
+		},
+
 		updateNames: function(data){
 			var index = data.indexOf(this.get('current_pattern'));
 			this.pattern_select.set('options', data);

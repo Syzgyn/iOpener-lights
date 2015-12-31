@@ -1,0 +1,9 @@
+body {
+	text-align: center;
+	margin-top: 50px;
+	background: #CCCCCC;
+}
+
+div.light-container {
+	width: 100%;
+}
