@@ -11,7 +11,7 @@ class ColorWipe(pattern.Pattern):
 
 		self.hue = random.randint(0, 359);
 		self.speed = random.randint(5, 10)
-		self.direction = random.randint(0, 1) #should be 0,3.  Fix shader directions first
+		self.direction = random.randint(0, 3) 
 
 		self.last_update = 100
 		self.current_led = -1
@@ -25,7 +25,7 @@ class ColorWipe(pattern.Pattern):
 
 			if self.current_led >= 36:
 				self.current_led = 0
-				self.hue = (self.hue + random.randint(0, 100) + 50) % 360
+				self.hue = (self.hue + 130) % 360
 
 	def shader(self, coords):
 		return colorWipe(coords, self.hue, self.direction, self.current_led)
