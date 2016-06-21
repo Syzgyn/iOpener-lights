@@ -1,0 +1,15 @@
+Rasberry Pi Build process
+1) Flash SD Card
+2) run raspi-config
+3) Install packages
+sudo apt-get update
+sudo apt-get install php5 apache2 php python cython vim supervisord python-pip git bridge-utils hostapd liblo7 liblo-dev isc-dhcp-server
+4) download & install liblo from http://das.nasophon.de/pyliblo/
+5) Install python packages
+sudo pip install numpy
+6) Install Git repos
+git clone https://github.com/scanlime/fadecandy.git
+git clone https://github.com/Syzgyn/iOpener-lights.git
+8) Setup supervisord for fcserver-rpi (config file in iOpener-lights repo) and for the lights python app
+9) Follow the instructions at http://www.daveconroy.com/using-your-raspberry-pi-as-a-wireless-router-and-web-server/ to get the wifi hotspot working
+10) If necessary, run ifconfig wlan0 10.10.0.1 (or whatever the primary IP address used is)
