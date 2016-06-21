@@ -12,11 +12,11 @@ var Lantern = function(settings)
 	this.emitter = settings.emitter;
 	this.patternEmitter = new EventEmitter();
 
-	this.model = JSON.parse(fs.readFileSync('layouts/sphere.json'));
+	this.model = JSON.parse(fs.readFileSync('layouts/64_sphere.json'));
 
 	this.tent_offset = settings.tent_offset;
 	this.currentPattern = null; 
-	this.num_leds = 36;
+	this.num_leds = this.model.length;
 	this.pixelBuffer = null;
 
 	this.flashPattern = new FlashPattern();
