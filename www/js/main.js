@@ -1,4 +1,9 @@
 require.config({
+    shim: {
+        bootstrap: {
+            deps: ['jquery'],
+        },
+    },
 	paths: {
 		backbone: 'libs/backbone/backbone',
 		jquery: 'libs/jquery/jquery-1.11.3',
@@ -6,6 +11,7 @@ require.config({
 		socket: '../socket.io/socket.io',
 		text: 'libs/require/text',
 		config: 'libs/config',
+        bootstrap: 'libs/bootstrap/bootstrap',
 	},
 });
 

@@ -7,7 +7,7 @@ define([
 ], function($, _, Backbone, LightsCollection, LightView){
 	return Backbone.View.extend({
 		tagName: 'div',
-		className: 'lights',
+		className: 'lights container',
 
 		initialize: function(){
 			this.collection = new LightsCollection();

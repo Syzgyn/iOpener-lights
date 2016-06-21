@@ -7,7 +7,7 @@ define([
 ], function($, _, Backbone, Template, DropdownView){
 	return Backbone.View.extend({
 		tagName: 'div',
-		className: 'light-container',
+		className: 'col-sm-12',
 
 		template: _.template(Template),
 
