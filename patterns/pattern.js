@@ -127,4 +127,17 @@ Pattern.XYToLed = function(x, y)
 	}
 }
 
+Pattern.coordsToSpherical = function(x, y, z) {
+    if(Array.isArray(x))
+    {
+        y = x[1];
+        z = x[2];
+        x = x[0];
+    }
+
+    return [1,
+            Math.acos(z),
+            Math.atan2(y, x)];
+}
+
 module.exports = Pattern;
