@@ -112,18 +112,18 @@ Pattern.prototype.getWebSettings = function()
 
 Pattern.ledToXY = function(i)
 {
-	return [i % 6, Math.floor(i / 6)];
+	return [i % 8, Math.floor(i / 8)];
 }
 
 Pattern.XYToLed = function(x, y)
 {
 	if(y % 2 == 1)
 	{
-		return y * 6 + 5 - x;
+		return y * 8 + 7 - x;
 	}
 	else
 	{
-		return y * 6 + x; 
+		return y * 8 + x; 
 	}
 }
 

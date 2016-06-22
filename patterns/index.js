@@ -10,6 +10,7 @@ patterns.push(require('./wholeRainbow'));
 patterns.push(require('./hueStripe'));
 patterns.push(require('./rainbowStripe'));
 patterns.push(require('./rotatingStripe'));
+patterns.push(require('./rain'));
 
 //Generate the pattern names
 for(var i in patterns)
