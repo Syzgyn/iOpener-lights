@@ -75,6 +75,12 @@ Controller.prototype.setGroupPattern = function()
 {
 	var duration = Math.randomInt(20,40);
 	var pattern_num  = Math.randomInt(0, pattern_lib.group.patterns.length - 1);
+
+    if(config.debug.enabled && !isNaN(parseInt(config.debug.restrict_group_pattern)))
+    {
+        pattern_num = config.debug.restrict_group_pattern;
+    }
+
 	var pattern = new pattern_lib.group.patterns[pattern_num]();
 
 	for(var i in this.timers)
@@ -84,6 +90,11 @@ Controller.prototype.setGroupPattern = function()
 	}
 
 	this.group_timer = Math.randomInt(config.patterns.group.min, config.patterns.group.max);
+
+    if(config.debug.enabled && !isNaN(parseInt(config.debug.restrict_group_pattern)))
+    {
+        this.group_timer = duration;
+    }
 }
 
 module.exports = Controller;

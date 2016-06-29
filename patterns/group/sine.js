@@ -75,7 +75,7 @@ Sine.prototype.shader = function(coords, led_num, tent_coords)
 {
 	var x = coords.point[0] + tent_coords.point[0];
 	var y = coords.point[1] + tent_coords.point[1];
-	var z = coords.point[2];
+	var z = coords.point[2] + tent_coords.point[2];
 
 	var z_sin = Math.sin(this.offset / 10 + x / this.xoff + y / this.yoff);
 	var dist = Math.abs(z_sin - z);
