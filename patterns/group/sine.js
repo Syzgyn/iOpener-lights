@@ -83,11 +83,6 @@ Sine.prototype.shader = function(coords, led_num, tent_coords)
 
 	var hsv = colorUtils.hsv(this.hue, 1, 1);
 
-	if(led_num == 2 || led_num == 9)
-	{
-//		console.log(led_num, intensity);
-	}
-
 	return [
 		hsv[0] * intensity,
 		hsv[1] * intensity,

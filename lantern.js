@@ -54,7 +54,7 @@ Lantern.prototype.initEvents = function()
 
 	this.emitter.on('propertyChange', function(data){
 		if(self.currentPattern instanceof Pattern &&
-			data.channel === self.channel)
+			(data.channel === self.channel || data.channel === -1))
 		{
 			self.currentPattern.emit('propertyChange', data);
 		}
@@ -97,6 +97,12 @@ Lantern.prototype.sendWebData = function()
 	var web_settings = this.currentPattern.getWebSettings();
 	web_settings.channel = this.channel;
 	this.emitter.emit('updateWeb', web_settings);
+
+    if(this.channel === 0)
+    {
+        web_settings.channel = -1;
+	    this.emitter.emit('updateWeb', web_settings);
+    }
 }
 
 Lantern.prototype.setPattern = function(pattern)

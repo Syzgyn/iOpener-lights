@@ -50,3 +50,9 @@ div.light-container {
 	width: 48%;
 	margin: 1%;
 }
+
+div.touchpad {
+    background-color: #AAAAAA;
+    width: 300px;
+    height: 300px;
+}

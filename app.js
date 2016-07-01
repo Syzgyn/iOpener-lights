@@ -28,7 +28,7 @@ var OPC = require('./libs/opc');
 var NUM_LANTERNS = config.num_lanterns;
 var lanterns = [];
 
-var tent_model = JSON.parse(fs.readFileSync('layouts/tent.json'));
+var tent_model = JSON.parse(fs.readFileSync('layouts/tent_small.json'));
 
 //Create EventEmitter
 var emitter = new EventEmitter();

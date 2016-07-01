@@ -15,8 +15,10 @@ define([
 
 			for(var i = 0; i < num_lanterns; i++)
 			{
-				this.add({id: i + offset});
+				this.add({id: i + offset, groupController: false});
 			}
+
+            this.add({id: -1, groupController: true}); //Group controller
 		},
 	});
 

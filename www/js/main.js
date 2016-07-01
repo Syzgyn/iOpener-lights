@@ -12,6 +12,7 @@ require.config({
 		text: 'libs/require/text',
 		config: 'libs/config',
         bootstrap: 'libs/bootstrap/bootstrap',
+        jqueryeventmove: 'libs/jquery/jquery.event.move',
 	},
 });
 

@@ -17,13 +17,14 @@ var www = function(settings)
 		res.send(JSON.stringify(config));
 	});
 
-	//Events that pass from event emitter to socket
+	//Events that pass from server to client 
 	this.emitter_events = [
 		'updateWeb',
 		'patternNames',
+        'updateGroupPattern',
 	];
 
-	//Events that pass from socket to event emitter
+	//Events that pass from client to server 
 	//value is whether or not it should be re-emitted by the socket to other connections
 	this.socket_events = {
 		'controllerChangePattern': true,

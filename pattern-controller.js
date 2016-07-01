@@ -9,6 +9,7 @@ var Controller = function(settings)
 	this.lanterns = settings.lanterns;
 
 	this.group_timer = config.patterns.group.start_time;
+    this.active_group_pattern = false;
 
 	this.timers = [];
 
@@ -49,6 +50,12 @@ Controller.prototype.tick = function()
 		
 		if(this.timers[i] <= 0)
 		{
+            if(this.active_group_pattern == true)
+            {
+                this.active_group_pattern = false;
+	            this.emitter.emit('updateGroupPattern', false);
+            }
+
 			var pattern_num = Math.randomInt(0, pattern_lib.patterns.length - 1);
 			var duration = Math.randomInt(config.patterns.min, config.patterns.max);
 
@@ -95,6 +102,9 @@ Controller.prototype.setGroupPattern = function()
     {
         this.group_timer = duration;
     }
+    
+    this.active_group_pattern = true;    
+	this.emitter.emit('updateGroupPattern', true);
 }
 
 module.exports = Controller;

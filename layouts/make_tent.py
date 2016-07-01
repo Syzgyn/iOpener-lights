@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-x_spacing = 6.5
-y_spacing = 4
-z_spacing = 1
+x_spacing = 3.0
+y_spacing = 3.0
+z_spacing = 1.0
 
 x_total = 4
 y_total = 4

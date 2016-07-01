@@ -17,8 +17,11 @@ define([
 
 		initialize: function()
 		{
+			_.bindAll(this, 'onSocketUpdateGroupPattern');
 			this.listenTo(this.model, 'controlsUpdated', this.render);
 			this.listenTo(this.model, 'namesUpdated', this.render);
+
+            window.socket.on('updateGroupPattern', this.onSocketUpdateGroupPattern);
 		},
 
 		render: function(){
@@ -47,5 +50,19 @@ define([
 		pingClick: function(e){
 			this.model.ping();
 		},
+
+        onSocketUpdateGroupPattern: function(data){
+            console.log(this.model.get('groupController'), data);
+
+            if(this.model.get('groupController') === data)
+            {
+                this.$el.removeClass('hide');
+            }
+            else
+            {
+                this.$el.addClass('hide');
+            }
+            
+        },
 	});
 });

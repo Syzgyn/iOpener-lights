@@ -5,6 +5,7 @@ var names = [];
 patterns.push(require('./hueStripe'));
 patterns.push(require('./wholeRainbow'));
 patterns.push(require('./sine'));
+patterns.push(require('./draw'));
 
 //Generate the pattern names
 for(var i in patterns)

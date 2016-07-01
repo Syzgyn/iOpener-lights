@@ -4,7 +4,8 @@ define([
 	'backbone',
 	'models/controls/slider',
 	'models/controls/dropdown',
-], function($, _, Backbone, SliderControl, DropdownControl){
+	'models/controls/touchpad',
+], function($, _, Backbone, SliderControl, DropdownControl, TouchpadControl){
 	var controls = Backbone.Collection.extend({
 		model: function(attrs, options){
 			switch(attrs.type)
@@ -16,6 +17,10 @@ define([
 				case "dropdown":
 					return new DropdownControl(attrs, options);
 					break;
+
+                case "touchpad":
+                    return new TouchpadControl(attrs, options);
+                    break;
 			}
 		},
 		
@@ -31,6 +36,10 @@ define([
 					case "dropdown":
 						var model = new DropdownControl(data);
 						break;
+
+                    case "touchpad":
+                        var model = new TouchpadControl(data);
+                        break;
 				}
 				
 				models.push(model);
