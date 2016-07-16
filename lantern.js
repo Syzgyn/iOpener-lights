@@ -12,7 +12,7 @@ var Lantern = function(settings)
 	this.emitter = settings.emitter;
 	this.patternEmitter = new EventEmitter();
 
-	this.model = JSON.parse(fs.readFileSync('layouts/64_sphere.json'));
+    this.model = JSON.parse(fs.readFileSync(settings.layout_file));
 
 	this.tent_offset = settings.tent_offset;
 	this.currentPattern = null; 
@@ -163,6 +163,11 @@ Lantern.prototype.mapPixels = function()
 		{
 			rgb = current_rgb;
 		}
+        //If we return a single number, increase the brightness of this pixel by that amount
+        else if(!isNaN(rgb))
+        {
+            rgb = current_rgb.map(function(x){return x + rgb;});
+        }
 
 		//Hacky way to overlay the flash pattern when needed 
 		if(this.is_flashing)

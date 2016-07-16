@@ -28,7 +28,7 @@ var OPC = require('./libs/opc');
 var NUM_LANTERNS = config.num_lanterns;
 var lanterns = [];
 
-var tent_model = JSON.parse(fs.readFileSync('layouts/tent_small.json'));
+var tent_model = JSON.parse(fs.readFileSync(config.tent_layout_file));
 
 //Create EventEmitter
 var emitter = new EventEmitter();
@@ -46,6 +46,7 @@ for(var i = 0; i < NUM_LANTERNS; i++)
 		emitter: emitter, 
 		channel: i + offset, 
 		tent_offset: tent_model[i],
+        layout_file: config.lantern_layout_file,
 	}); 
 	//lanterns[i].setPattern(pattern);
 }
