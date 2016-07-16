@@ -5,7 +5,7 @@ y_spacing = 3.0
 z_spacing = 1.0
 
 x_total = 4
-y_total = 4
+y_total = 8
 
 half_x = (x_spacing * (x_total - 1)) / 2
 half_y = (y_spacing * (y_total - 1)) / 2

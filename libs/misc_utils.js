@@ -17,6 +17,10 @@ Math.randomInt = function(min, max) {
 	return Math.floor(Math.seed(two())() * (max - min + 1)) + min;
 }
 
+Math.randomRange = function(min, max) {
+	return Math.seed(two())() * (max - min + 1) + min;
+}
+
 //Debugging output
 console.debug = function()
 {

@@ -6,6 +6,8 @@ patterns.push(require('./hueStripe'));
 patterns.push(require('./wholeRainbow'));
 patterns.push(require('./sine'));
 patterns.push(require('./draw'));
+patterns.push(require('./ripple'));
+patterns.push(require('./waves'));
 
 //Generate the pattern names
 for(var i in patterns)
