@@ -81,12 +81,6 @@ Ripple.prototype.shader = function(coords, led_num, tent_coords)
 	var y = coords.point[1] + tent_coords.point[1];
 	var z = coords.point[2] + tent_coords.point[2];
 
-	var z_sin = Math.sin(this.offset / 10 + x / this.xoff + y / this.yoff);
-	var dist = Math.abs(z_sin - z);
-	var intensity = this.intensity / (1 + this.falloff * dist);
-
-	var hsv = colorUtils.hsv(this.hue, 1, 1);
-
     var x_dist = x + this.xCenter;
     var y_dist = y + this.yCenter;
 

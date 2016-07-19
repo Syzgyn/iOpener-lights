@@ -8,6 +8,7 @@ patterns.push(require('./sine'));
 patterns.push(require('./draw'));
 patterns.push(require('./ripple'));
 patterns.push(require('./waves'));
+patterns.push(require('./rings'));
 
 //Generate the pattern names
 for(var i in patterns)
