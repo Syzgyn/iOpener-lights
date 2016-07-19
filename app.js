@@ -60,7 +60,7 @@ if(config.web.enabled)
 	var www = new WebServer({emitter: emitter});
 }
 
-function lantern_loop()
+function controller_display_loop()
 {
 	for(var i = 0; i < NUM_LANTERNS; i++)
 	{
@@ -73,5 +73,4 @@ function controller_loop()
 	controller.tick();
 }
 
-setInterval(lantern_loop, config.lantern_loop_timer);
-setInterval(controller_loop, config.controller_loop_timer);
+setInterval(controller_loop, config.lantern_loop_timer);

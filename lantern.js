@@ -131,9 +131,9 @@ Lantern.prototype.writePixels = function()
 	this.opc_client.writePixels(this.pixelBuffer);
 }
 
-Lantern.prototype.mapPixels = function()
+Lantern.prototype.mapPixels = function(shader)
 {
-	var shader = this.currentPattern.shader.bind(this.currentPattern);
+	shader = shader || this.currentPattern.shader.bind(this.currentPattern);
     // Set all pixels, by mapping each element of "model" through "fn" and setting the
     // corresponding pixel value. The function returns a tuple of three 8-bit RGB values.
     // Implies 'writePixels' as well. Has no effect if the OPC client is disconnected.
@@ -186,10 +186,10 @@ Lantern.prototype.mapPixels = function()
 
 		//Do pixel shading here if the pattern wants, rather than
 		//implementing it in each pattern separately
-		if(this.currentPattern.use_gradient === true)
-		{
-			rgb = colorUtils.gradient(current_rgb, rgb, parseFloat(this.currentPattern.FPS) / 170); 
-		}
+		//if(this.currentPattern.use_gradient === true)
+		//{
+		//	rgb = colorUtils.gradient(current_rgb, rgb, parseFloat(this.currentPattern.FPS) / 170); 
+		//}
 
 		this.pixelBuffer.writeUInt8(Math.max(0, Math.min(255, rgb[0] | 0)), offset);
 		this.pixelBuffer.writeUInt8(Math.max(0, Math.min(255, rgb[1] | 0)), offset + 1);

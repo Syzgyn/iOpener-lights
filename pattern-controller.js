@@ -1,6 +1,7 @@
 var config = require('./config');
 var pattern_lib = require('./patterns');
 var clone = require('clone');
+var Pattern = require('./patterns/pattern');
 
 var Controller = function(settings)
 {
@@ -8,15 +9,9 @@ var Controller = function(settings)
 	this.emitter = settings.emitter;
 	this.lanterns = settings.lanterns;
 
-	this.group_timer = config.patterns.group.start_time;
-    this.active_group_pattern = false;
-
-	this.timers = [];
-
-	for(var i in this.lanterns)
-	{
-		this.timers[this.lanterns[i].channel] = 0;
-	}
+	this.timer = 0;
+    this.last_run = 0;
+    this.current_pattern = null;
 
 	this.emitter.on('newConnection', function(){
 		self.sendPatternNames();
@@ -30,81 +25,67 @@ var Controller = function(settings)
 }
 
 Controller.prototype.sendPatternNames = function(){
-	var names = pattern_lib.names;
+	var names = pattern_lib.group.names;
 	this.emitter.emit('patternNames', names);
 }
 
 Controller.prototype.tick = function()
 {
-	this.group_timer--;
+	if(this.current_pattern instanceof Pattern)
+	{
+		this.current_pattern.tick();
+	}
 
-	if(this.group_timer <= 0)
+	var elapsed_time = Date.now() - this.last_run;
+	if(this.FPS == false || elapsed_time > 1000 / this.FPS)
+	{
+		this.timer--;
+		this.last_run = Date.now();
+	}
+
+	if(this.timer <= 0)
 	{
 		this.setGroupPattern();
-		return;
 	}
-
-	for(var i in this.timers)
-	{
-		this.timers[i]--;
-		
-		if(this.timers[i] <= 0)
-		{
-            if(this.active_group_pattern == true)
-            {
-                this.active_group_pattern = false;
-	            this.emitter.emit('updateGroupPattern', false);
-            }
-
-			var pattern_num = Math.randomInt(0, pattern_lib.patterns.length - 1);
-			var duration = Math.randomInt(config.patterns.min, config.patterns.max);
-
-			if(config.debug.enabled && !isNaN(parseInt(config.debug.restrict_pattern)))
-			{
-				pattern_num = config.debug.restrict_pattern;
-			}
-
-			var pattern = new pattern_lib.patterns[pattern_num]();
-
-			this.setPattern(i, pattern, duration);
-			console.debug('change pattern: light %s to %s for duration %s', i, pattern_lib.names[pattern_num], duration);
-		}
-	}
-}
-
-Controller.prototype.setPattern = function(light, pattern, duration)
-{
-	this.emitter.emit('lightChangePattern', light, pattern); 
-	this.timers[light] = duration;
 }
 
 Controller.prototype.setGroupPattern = function()
 {
-	var duration = Math.randomInt(20,40);
+    var self = this;
+	var duration = Math.randomInt(config.patterns.min, config.patterns.max);
 	var pattern_num  = Math.randomInt(0, pattern_lib.group.patterns.length - 1);
 
     if(config.debug.enabled && !isNaN(parseInt(config.debug.restrict_group_pattern)))
     {
         pattern_num = config.debug.restrict_group_pattern;
     }
-
-	var pattern = new pattern_lib.group.patterns[pattern_num]();
-
-	for(var i in this.timers)
+	
+	if(this.current_pattern)
 	{
-		var p = clone(pattern);
-		this.setPattern(i, p, duration);
+		this.current_pattern.removeAllListeners('render').removeAllListeners('getColor');
 	}
 
-	this.group_timer = Math.randomInt(config.patterns.group.min, config.patterns.group.max);
+	this.current_pattern = new pattern_lib.group.patterns[pattern_num]();
+	
+    this.current_pattern.init();
 
-    if(config.debug.enabled && !isNaN(parseInt(config.debug.restrict_group_pattern)))
-    {
-        this.group_timer = duration;
-    }
-    
-    this.active_group_pattern = true;    
+	this.current_pattern.on('render', this.render.bind(this));
+	this.current_pattern.on('getColor', function(i){
+		self.current_pattern.emit('pixelValue', self.getPixelValue(i));
+	});
+
+    this.timer = duration;
+
 	this.emitter.emit('updateGroupPattern', true);
+	console.debug('change pattern to %s for duration %s', pattern_lib.group.names[pattern_num], duration);
+}
+
+Controller.prototype.render = function()
+{
+    for(lantern in this.lanterns)
+    {
+        this.lanterns[lantern].mapPixels(this.current_pattern.shader.bind(this.current_pattern));
+    }
 }
 
 module.exports = Controller;
