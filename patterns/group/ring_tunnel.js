@@ -1,0 +1,257 @@
+var colorUtils = require('../../libs/color_utils');
+var Vector = require('../../libs/Vector');
+var util = require('util');
+var Pattern = require('../pattern');
+
+var RingTunnel = function()
+{
+	RingTunnel.super_.call(this);
+	
+    this.web_settings = {
+		name: "Tunnel"
+    }
+
+    this.offset = 0;
+    this.cameraPos = Vector.vec3(0);
+    this.cameraTar = Vector.vec3(0);
+
+
+    this.hue = Math.random();
+}
+
+util.inherits(RingTunnel, Pattern);
+
+RingTunnel.prototype.update = function()
+{
+    this.offset += 1;
+    this.hue = (this.hue + 0.0001) % 1;
+    console.log("update");
+}
+
+RingTunnel.prototype.shader = function(coords, led_num, tent_coords)
+{
+	var x = coords.point[0] + tent_coords.point[0];
+	var y = coords.point[1] + tent_coords.point[1];
+	var z = coords.point[2] + tent_coords.point[2];
+
+    var normalized = new Vector(Pattern.normalizeCoords(x, y, z));
+    var resolution = new Vector(Pattern.resolution());
+    var ratio = resolution.array[1] / resolution.array[0];
+
+    var p = new Vector(resolution);
+    p.multiply(-1).add(new Vector([x, y]).multiply(2)).divide(resolution.array[1]);
+
+
+    //-----------------------------------------------------
+    // camera
+    //-----------------------------------------------------
+    
+    // camera movement
+    this._setCamera();
+
+    // camera matrix
+    var cameraMatrix = this._calcMatrix(this.cameraPos, this.cameraTar, 0.0 );  // 0.0 is the camera roll
+    
+    // create view ray
+    var vr = new Vector([p.array[0], p.array[1], 2.0]);
+
+    //Jesus fuck...
+    var rd = Vector.normalize(new Vector([
+        cameraMatrix[0].array[0] * vr.array[0] + cameraMatrix[1].array[0] * vr.array[1] + cameraMatrix[2].array[0] * vr.array[2],
+        cameraMatrix[0].array[1] * vr.array[0] + cameraMatrix[1].array[1] * vr.array[1] + cameraMatrix[2].array[1] * vr.array[2],
+        cameraMatrix[0].array[2] * vr.array[0] + cameraMatrix[1].array[2] * vr.array[1] + cameraMatrix[2].array[2] * vr.array[2]
+    ]));
+
+
+    //-----------------------------------------------------
+    // render
+    //-----------------------------------------------------
+    var col = this._setBackground();
+
+    // raymarch
+    var t = this._calcIntersection(this.cameraPos, rd);
+
+    if(t > -0.5)
+    {
+        // geometry
+        var pos = new Vector(this.cameraPos);
+        pos.add(new Vector(rd).multiply(t));
+
+        var normal = this._calcNormal(pos);
+
+        // materials
+        var material = this._material();
+        col = Vector.mix(col, this._lighting(pos, normal, rd, t, material), 1.0 - this._fog(t, 0.2));
+    }
+
+    //-----------------------------------------------------
+    // postprocessing
+    //-----------------------------------------------------
+    // gamma
+    col.clamp(0, 1).pow(0.4545);
+
+    col.array[0] = this._smoothstep(0, 1, col.array[0]);
+    col.array[2] = this._smoothstep(0, 0.8, col.array[2]);
+
+    col.multiply(255);
+
+    return col.array;
+}
+
+RingTunnel.prototype._smoothstep = function(x, y, a)
+{
+    var t = colorUtils.clamp((a - x) / (y - x), 0, 1);
+    return t * t * (3 - 2 * t);
+}
+
+RingTunnel.prototype._setCamera = function()
+{
+    var ang = 0;
+    this.cameraPos.array = [3.5 * Math.sin(ang), 1.0, 3.5 * Math.cos(ang)];
+    this.cameraTar.array = [Math.sin(this.offset) / 2.0, Math.cos(this.offset / 2.25), 0];
+}
+
+RingTunnel.prototype._setBackground = function()
+{
+    //return new Vector([1,1,1]);
+    return new Vector([0.02,0.01,0.03]);
+}
+
+RingTunnel.prototype._torus = function(point, t)
+{
+    var d1 = new Vector([point.array[0], point.array[2]]);
+    var d2 = new Vector([d1.length - t.array[0], point.array[1]]);
+    
+    return d2.length - t.array[1];
+}
+
+RingTunnel.prototype._fog = function(dist, density)
+{
+    var d = dist * density;
+    return 1.0 - colorUtils.clamp(Math.exp(2, d * d * -1.442695), 0, 1);
+}
+
+RingTunnel.prototype._doModel = function(point)
+{
+    var d = 10000000.0;
+    var off = new Vector([1.0, 0.0]);
+    var origin = new Vector([0.0, 0.0, -0.5]);
+    var move = this.offset * -4.0;
+    var warp = 0.25;
+    
+    for (var i = 0; i < 15; i++)
+    {
+        var j = i - 5;
+        var k = i - Math.floor(move);
+        var p2 = new Vector([point.array[0], point.array[2], point.array[1]]);
+
+        p2.add(new Vector([0, 1, 0]).multiply(j));
+        p2.add(origin);
+        p2.add(new Vector([Math.sin(k * 0.5 + move) * warp, move % 1.0, Math.cos(k * 0.9 + move) * warp]));
+
+        var tor = this._torus(p2, new Vector([1.5, 0.155]));
+        d = Math.min(d, tor);
+    }
+    
+    return d;    
+}
+
+RingTunnel.prototype._material = function()
+{
+    return new Vector([0.5, 0.5, 0.15]);
+}
+
+RingTunnel.prototype._calcSoftShadow = function(ro, rd)
+{
+    var res = 1.0;
+    var t = 0.0005;                 // selfintersection avoidance distance
+    var h = 1.0;
+    for(var i = 0; i < 8; i++ )         // 40 is the max numnber of raymarching steps
+    {
+        h = this._doModel(ro.add(rd.multiply(t)));
+        res = Math.min(res, 8.0 * h / t );   // 64 is the hardness of the shadows
+        t += colorUtils.clamp(h, 0.02, 2.0);   // limit the max and min stepping distances
+    }
+    return colorUtils.clamp(res, 0.0, 1.0);
+}
+
+RingTunnel.prototype._lighting = function(position, norm, mal)
+{
+    var lin = Vector.vec3(0);
+
+    // key light
+    //-----------------------------
+    var light = Vector.normalize(new Vector([0, 0, 1.5]).subtract(position));
+    var diff = Math.max(Vector.dot(norm, light), 0);
+    var shadow = 0;
+    if(diff > 0.01)
+    {
+        shadow = this._calcSoftShadow(position.add(norm.add(0.01)), light);
+    }
+
+    lin.add(diff.multiply(4).multiply(shadow));
+
+    // ambient light
+    //-----------------------------
+    lin.add(0.5);
+
+    
+    // surface-light interacion
+    //-----------------------------
+    mal.multiply(lin);
+
+    return mal;
+}
+
+RingTunnel.prototype._calcIntersection = function(ro, rd)
+{
+    var maxd = 20.0;           // max trace distance
+    var precis = 0.001;        // precission of the intersection
+    var h = precis*2.0;
+    var t = 0.0;
+    var res = -1.0;
+    for(var i = 0; i < 90; i++)          // max number of raymarching iterations is 90
+    {
+        if(h < precis || t > maxd)
+        {
+            break;
+        }
+        h = this._doModel(ro.add(rd.multiply(t)));
+        t += h;
+    }
+
+    if(t < maxd)
+    {
+        res = t;
+    }
+
+    return res;
+}
+
+RingTunnel.prototype._calcNormal = function(position)
+{
+    var eps = 0.002;             // precision of the normal computation
+
+    var v1 = new Vector([1, -1, -1]);
+    var v2 = new Vector([-1, -1, 1]);
+    var v3 = new Vector([-1, 1, -1]);
+    var v4 = new Vector([1, 1, 1]);
+
+    return Vector.normalize(
+        v1.multiply(this._doModel(position.add(v1.multiply(eps)))).add(
+        v2.multiply(this._doModel(position.add(v2.multiply(eps)))).add(
+        v3.multiply(this._doModel(position.add(v3.multiply(eps)))).add(
+        v4.multiply(this._doModel(position.add(v4.multiply(eps))))
+    ))));
+}
+
+RingTunnel.prototype._calcMatrix = function(ro, ta, roll)
+{
+    var ww = Vector.normalize(ta.subtract(ro));
+    var uu = Vector.normalize(Vector.cross(ww, new Vector([Math.sin(roll), Math.cos(roll), 0])));
+    var vv = Vector.normalize(Vector.cross(uu, ww));
+
+    return [uu, vv, ww];
+}
+
+module.exports = RingTunnel;

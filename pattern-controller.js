@@ -37,7 +37,7 @@ Controller.prototype.tick = function()
 	}
 
 	var elapsed_time = Date.now() - this.last_run;
-	if(this.FPS == false || elapsed_time > 1000 / this.FPS)
+	if(elapsed_time > 1000)
 	{
 		this.timer--;
 		this.last_run = Date.now();

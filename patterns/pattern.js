@@ -5,6 +5,7 @@
 var utils = require('../libs/color_utils');
 var util = require('util');
 var EventEmitter = require('events');
+var config = require('../config');
 
 var Pattern = function(){
 	this.FPS = 100;					//How often the pattern should be rendered, per second
@@ -138,6 +139,32 @@ Pattern.coordsToSpherical = function(x, y, z) {
     return [1,
             Math.acos(z),
             Math.atan2(y, x)];
+}
+
+Pattern.normalizeCoords = function(x, y, z) {
+    if(Array.isArray(x))
+    {
+        y = x[1];
+        z = x[2];
+        x = x[0];
+    }
+    var bounds = config.coordBounds;
+    
+    return [
+        utils.remap(x, bounds[0].min, bounds[0].max, 0, 1),
+        utils.remap(y, bounds[1].min, bounds[1].max, 0, 1),
+        utils.remap(z, bounds[2].min, bounds[2].max, 0, 1),
+    ];
+
+}
+
+Pattern.resolution = function() {
+    var bounds = config.coordBounds;
+    return [
+        Math.abs(bounds[0].min - bounds[0].max),
+        Math.abs(bounds[1].min - bounds[1].max),
+        Math.abs(bounds[2].min - bounds[2].max)
+    ];
 }
 
 module.exports = Pattern;

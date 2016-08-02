@@ -155,7 +155,7 @@ Lantern.prototype.mapPixels = function(shader)
 			this.pixelBuffer[offset + 2]
 		];
         var led = this.model[i];
-        var rgb = led ? shader(led, i, this.tent_offset) : unused;
+        var rgb = led ? shader(led, i, this.tent_offset, this.channel) : unused;
 
 		//Give the option to pass false through the shader to not set 
 		//a color for this pixel, keeping it the same as what it was previously 
