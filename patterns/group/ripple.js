@@ -1,6 +1,6 @@
-var colorUtils = require('../../libs/color_utils');
+var colorUtils = require(appRoot + 'libs/color_utils');
 var util = require('util');
-var Pattern = require('../pattern');
+var Pattern = require(patternRoot + 'pattern');
 
 var Ripple = function()
 {

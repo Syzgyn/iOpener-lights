@@ -1,3 +1,6 @@
+global.appRoot = __dirname + '/';
+global.patternRoot = __dirname + '/patterns/';
+
 //Load config file
 try {
 	var config = require('./config');

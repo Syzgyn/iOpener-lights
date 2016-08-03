@@ -1,6 +1,6 @@
-var utils = require('../libs/color_utils');
+var utils = require(appRoot + 'libs/color_utils');
 var util = require('util');
-var Pattern = require('./pattern');
+var Pattern = require(patternRoot + 'pattern');
 
 var Rain = function(settings){
 	Rain.super_.call(this, settings);

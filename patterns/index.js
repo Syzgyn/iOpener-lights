@@ -1,31 +1,48 @@
+var fs = require('fs');
+var pathLib = require("path");
 var patterns = [];
 var names = [];
+var singlePatterns = [];
+var singleNames = [];
 
-
-//Add all patterns here
-patterns.push(require('./colorWipe'));
-patterns.push(require('./snake'));
-patterns.push(require('./rainbowSparkle'));
-patterns.push(require('./wholeRainbow'));
-patterns.push(require('./hueStripe'));
-patterns.push(require('./rainbowStripe'));
-patterns.push(require('./rotatingStripe'));
-patterns.push(require('./rain'));
-
-//Generate the pattern names
-for(var i in patterns)
-{
-	var p = new patterns[i]();
-	var data = p.getWebSettings();
-
-	names[i] = data.name;
+var getFiles = function(path, pArr, nArr, recursive){
+    if(!recursive)
+    {
+        path = pathLib.join(__dirname, path);
+    }
+    fs.readdirSync(path).forEach(function(file)
+    {
+        var subpath = pathLib.join(path, file);
+        if(fs.lstatSync(subpath).isDirectory())
+        {
+            getFiles(subpath, pArr, nArr, true);
+        } else if(pathLib.extname(file) == ".js") {
+            var p = require(subpath);
+            var instance = new p();
+            var data = instance.getWebSettings();
+            pArr.push(p);
+            nArr.push(data.name);
+        }
+    });     
 }
 
-module.exports.patterns = patterns;
-module.exports.names = names;
+//Get all single patterns
+getFiles('./single', singlePatterns, singleNames);
 
-//Grab all the group patterns separately
-module.exports.group = require('./group');
+module.exports.single = {
+    patterns: singlePatterns,
+    names: singleNames,
+}
 
-//Flash is a special pattern used when pinging a lantern, so users can see which one it is
-module.exports.flash = require('./flash');
+//Get all group patterns
+getFiles('./group', patterns, names);
+
+module.exports.group = {
+    patterns: patterns,
+    names: names,
+}
+
+for(var i in names)
+{
+    console.log(i, names[i]);
+}

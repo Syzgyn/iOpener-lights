@@ -2,7 +2,7 @@ var util = require('util');
 var EventEmitter = require('events');
 var fs = require('fs');
 var colorUtils = require('./libs/color_utils');
-var FlashPattern = require('./patterns').flash;
+//var FlashPattern = require('./patterns').flash;
 var Pattern = require('./patterns/pattern');
 
 var Lantern = function(settings)
@@ -19,8 +19,8 @@ var Lantern = function(settings)
 	this.num_leds = this.model.length;
 	this.pixelBuffer = null;
 
-	this.flashPattern = new FlashPattern();
-	this.is_flashing = false;
+	//this.flashPattern = new FlashPattern();
+	//this.is_flashing = false;
 
 	this.initBuffer();
 	this.initEvents();
@@ -79,12 +79,14 @@ Lantern.prototype.tick = function()
 		this.currentPattern.tick();
 	}
 
+    /*
 	if(this.is_flashing)
 	{
 		this.flashPattern.tick();
 
 		this.is_flashing = this.flashPattern.isActive();
 	}
+    */
 }
 
 Lantern.prototype.sendWebData = function()
@@ -170,6 +172,7 @@ Lantern.prototype.mapPixels = function(shader)
         }
 
 		//Hacky way to overlay the flash pattern when needed 
+        /*
 		if(this.is_flashing)
 		{
 			var flash_shader = this.flashPattern.shader.bind(this.flashPattern);
@@ -183,6 +186,7 @@ Lantern.prototype.mapPixels = function(shader)
 
 			//console.log(rgb);
 		}
+        */
 
 		//Do pixel shading here if the pattern wants, rather than
 		//implementing it in each pattern separately
@@ -208,8 +212,8 @@ Lantern.prototype.getPixelValue = function(i)
 
 Lantern.prototype.ping = function()
 {
-	this.is_flashing = true;
-	this.flashPattern.reset();
+	//this.is_flashing = true;
+	//this.flashPattern.reset();
 }
 
 module.exports = Lantern;

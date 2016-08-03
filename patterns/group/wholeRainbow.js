@@ -1,5 +1,5 @@
 var util = require('util');
-var Pattern = require('../wholeRainbow');
+var Pattern = require(patternRoot + 'single/wholeRainbow');
 
 var Rainbow = function()
 {

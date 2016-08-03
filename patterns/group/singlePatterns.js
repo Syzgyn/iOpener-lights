@@ -1,8 +1,8 @@
-var colorUtils = require('../../libs/color_utils');
-var config = require('../../config');
+var colorUtils = require(appRoot + 'libs/color_utils');
+var config = require(appRoot + 'config');
 var util = require('util');
-var Pattern = require('../pattern');
-var pattern_lib = require('..');
+var Pattern = require(patternRoot + 'pattern');
+var pattern_lib = require(patternRoot);
 
 var SinglePatterns = function()
 {
@@ -26,9 +26,9 @@ util.inherits(SinglePatterns, Pattern);
 
 SinglePatterns.prototype.setNewPattern = function(i)
 {
-    var pattern_num  = Math.randomInt(0, pattern_lib.patterns.length - 1);
+    var pattern_num  = Math.randomInt(0, pattern_lib.single.patterns.length - 1);
     this.patterns[i] = {
-        pattern: new pattern_lib.patterns[pattern_num],
+        pattern: new pattern_lib.single.patterns[pattern_num],
         duration: Math.randomInt(20, 50)
     };
 }

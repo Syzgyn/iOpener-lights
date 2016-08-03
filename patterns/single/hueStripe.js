@@ -1,19 +1,22 @@
-var colorUtils = require('../libs/color_utils');
+var colorUtils = require(appRoot + 'libs/color_utils');
 var util = require('util');
-var Pattern = require('./pattern');
+var Pattern = require(patternRoot + 'pattern');
 
 var Stripe = function(settings)
 {
 	Stripe.super_.call(this, settings);
 
+	this.hue = Math.random();
 	this.speed = Math.randomInt(10,60);
 	this.direction = Math.randomInt(0,2);
-	this.width = Math.randomInt(20, 80);
+
+	this.range = 40;
+	this.swing = this.range / 2;
 
 	this.offset = 0;
 
 	this.web_settings = {
-		name: "Rainbow Stripe",
+		name: "Hue Stripe",
 		controls: [
 			{
 				type: 'slider',
@@ -27,12 +30,13 @@ var Stripe = function(settings)
 			},
 			{
 				type: 'slider',
-				property: 'width',
-				value: this.width,
-				label: 'Color Width',
+				property: 'hue',
+				value: this.hue,
+				label: 'Color',
 				settings: {
-					min: 15,
-					max: 90,
+					min: "0",
+					max: 1,
+					step: 0.001,
 				},
 			},
 			{
@@ -58,9 +62,10 @@ Stripe.prototype.update = function()
 Stripe.prototype.shader = function(coords, led_num)
 {
 	var dir_var = coords.point[this.direction];
-	var bigHue = (((1.0 + dir_var) * this.width) + (this.offset / 1.0)) % 255;
-	var smallHue = colorUtils.remap(bigHue, 0, 255, 0, 1);
 
+	var remappedHue = colorUtils.remap(this.hue, 0, 1, 0, 255);
+	var bigHue = (remappedHue + ((Math.cos(this.offset * 0.125 + (1.0 + dir_var)) * this.swing) + this.range / 2)) % 255; 
+	var smallHue = colorUtils.remap(bigHue, 0, 255, 0, 1);
 	return colorUtils.hsv(smallHue, 1, 1);
 }
 

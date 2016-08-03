@@ -1,5 +1,5 @@
 var util = require('util');
-var Pattern = require('../hueStripe');
+var Pattern = require(patternRoot + 'single/hueStripe');
 
 var Stripe = function()
 {

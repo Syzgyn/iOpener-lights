@@ -1,9 +1,9 @@
 //https://www.shadertoy.com/view/MstGWH
-var colorUtils = require('../../libs/color_utils');
-var vector = require('../../libs/vector_utils');
-var Vector = require('../../libs/Vector');
+var colorUtils = require(appRoot + 'libs/color_utils');
+var vector = require(appRoot + 'libs/vector_utils');
+var Vector = require(appRoot + 'libs/Vector');
 var util = require('util');
-var Pattern = require('../pattern');
+var Pattern = require(patternRoot + 'pattern');
 
 var WhiteTunnel = function()
 {
