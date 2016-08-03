@@ -135,12 +135,12 @@ module.exports = {
             r = r[0];
         }
 
-        if(Math.max(r, g, b) > 1)
-        {
+//        if(Math.max(r, g, b) > 1)
+//        {
             r = (r % 255) / 255.0; 
             g = (g % 255) / 255.0; 
             b = (b % 255) / 255.0; 
-        }
+//        }
 
         var max = Math.max(r, g, b), min = Math.min(r, g, b);
         var h, s, v = max;
