@@ -6,7 +6,7 @@ Also provides a web interface using Backbone.js and Socket.io to control the lig
 * `app.js`: Creates the lanterns, pattern controller, and event loops
 * `default.config.js`: common configuration options.  copy to `config.js` before running
 * `lantern.js`: Defines one lantern 
-* `pattern-controller.js`: Manages the patterns each lantern displays
+* `controller.js`: Manages the patterns each lantern displays
 * `web.js`: The front-end web interface, uses socket.io to stay in sync
 * `/extras`: Miscellaneous files and scripts not needed to run the node.js app
 * `/layouts`: .json files mapping the physical locations of each LED in a lantern

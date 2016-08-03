@@ -18,7 +18,7 @@ require('./libs/misc_utils')
 
 //Class declarations
 var Lantern = require('./lantern');
-var PatternController = require('./pattern-controller');
+var Controller = require('./controller');
 var EventEmitter = require('events');
 var fs = require('fs');
 var WebServer = require('./web');
@@ -52,7 +52,7 @@ for(var i = 0; i < NUM_LANTERNS; i++)
 }
 
 //Create pattern controller
-var controller = new PatternController({emitter: emitter, lanterns: lanterns});
+var controller = new Controller({emitter: emitter, lanterns: lanterns});
 
 //Create web front end
 if(config.web.enabled)
