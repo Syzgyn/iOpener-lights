@@ -5,7 +5,7 @@
 var utils = require('../libs/color_utils');
 var util = require('util');
 var EventEmitter = require('events');
-var config = require('../config');
+var config = require('../configHandler');
 
 var Pattern = function(){
 	this.FPS = 100;					//How often the pattern should be rendered, per second
@@ -13,6 +13,8 @@ var Pattern = function(){
 	this.last_run = 0;				//Last time the pattern was rendered
 	this.use_gradient = false;		//If the pattern wants pixel transitions to be smooth
 	this.requested_pixel = [0,0,0]; //The latest requested pixel via getCurrentColor(num)
+
+    this.appConfig = config;
 
 	this.channel = 0;
 

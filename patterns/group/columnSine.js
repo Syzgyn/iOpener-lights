@@ -1,5 +1,4 @@
 var colorUtils = require(appRoot + 'libs/color_utils');
-var config = require(appRoot + 'config');
 var util = require('util');
 var Pattern = require(patternRoot + 'pattern');
 var pattern_lib = require(patternRoot);
@@ -8,7 +7,7 @@ var ColumnSine = function()
 {
 	ColumnSine.super_.call(this);
 
-    this.bounds = config.coordBounds[1];
+    this.bounds = this.appConfig.coordBounds[1];
     this.numColumns = 4;
     this.offset = 0;
     this.columns = [];

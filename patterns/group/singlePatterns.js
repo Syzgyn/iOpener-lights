@@ -1,5 +1,4 @@
 var colorUtils = require(appRoot + 'libs/color_utils');
-var config = require(appRoot + 'config');
 var util = require('util');
 var Pattern = require(patternRoot + 'pattern');
 var pattern_lib = require(patternRoot);
@@ -8,7 +7,7 @@ var SinglePatterns = function()
 {
 	SinglePatterns.super_.call(this);
     
-    this.numPatterns = config.num_lanterns;
+    this.numPatterns = this.appConfig.num_lanterns;
     this.lastRun = 0;
     this.patterns = [];
 

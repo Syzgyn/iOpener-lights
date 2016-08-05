@@ -1,6 +1,5 @@
 //https://www.shadertoy.com/view/MsXSzM#
 var colorUtils = require(appRoot + 'libs/color_utils');
-var config = require(appRoot + 'config');
 var util = require('util');
 var Pattern = require(patternRoot + 'pattern');
 var pattern_lib = require(patternRoot);
@@ -13,7 +12,7 @@ var Blinky = function()
     this.trigger = 0.008;
     this.minTrigger = 0.2;
     
-    this.numLanterns = config.num_lanterns;
+    this.numLanterns = this.appConfig.num_lanterns;
     this.lastRun = 0;
     this.lanterns = [];
     this.hue = Math.random();

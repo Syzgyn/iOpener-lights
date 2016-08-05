@@ -1,24 +1,10 @@
 global.appRoot = __dirname + '/';
 global.patternRoot = __dirname + '/patterns/';
 
-//Load config file
-try {
-	var config = require('./config');
-} catch (ex) {
-	if(ex.code == 'MODULE_NOT_FOUND')
-	{
-		console.log("Config file not found.  Please copy default.config.js to config.js and make any changes");
-		process.exit();
-	}
-	else
-	{
-		throw ex;
-	}
-};
-
 //Libraries
 require('./libs/misc_utils') 
 
+var config = require('./configHandler');
 //Class declarations
 var Lantern = require('./lantern');
 var Controller = require('./controller');
