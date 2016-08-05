@@ -8,14 +8,18 @@ var Bounce = function()
 
     this.numBalls = 10;
 
-    this.x_range = 4;
-    this.y_range = 10;
+    this.x_range = this.appConfig.coordBounds[0].max;
+    this.y_range = this.appConfig.coordBounds[1].max;
 
     this.balls = [];
 
     this.hue = Math.random();
     this.speed = 1;
     this.decay = 1;
+
+	this.web_settings = {
+		name: "Bounce",
+    }
 
     this.initBalls();
 }
@@ -79,7 +83,7 @@ Bounce.prototype.initBalls = function()
         {
             self.dx = Math.randomRange(-1, 1);
             self.dy = Math.randomRange(-1, 1);
-            self.directionTimer = Math.randomInt(200, 400);
+            self.directionTimer = Math.randomInt(2000, 4000);
         }
         
     }
@@ -98,7 +102,7 @@ Bounce.prototype.update = function()
         this.balls[i].move();
     }
 
-    this.hue += 0.0005;
+    this.hue += 0.0001;
 }
 
 Bounce.prototype.shader = function(coords, led_num, tent_coords)
