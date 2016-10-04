@@ -46,7 +46,7 @@ OPC.prototype._reconnect = function()
 	});
 
     this.socket.connect(this.port, this.host, function() {
-        console.debug("Connected to " + _this.socket.remoteAddress);
+        console.debug("Connected to " + _this.socket.remoteAddress + ":" + _this.socket.remotePort);
         _this.connected = true;
         _this.socket.setNoDelay();
     });

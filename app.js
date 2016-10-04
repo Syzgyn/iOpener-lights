@@ -25,6 +25,7 @@ emitter.setMaxListeners(NUM_LANTERNS + 2);
 
 //OPC client
 var client = new OPC(config.opc.host, config.opc.port);
+var debug_client = new OPC(config.opc.host, config.opc.debug_port);
 
 //Create Lanterns
 for(var i = 0; i < NUM_LANTERNS; i++)
@@ -32,6 +33,7 @@ for(var i = 0; i < NUM_LANTERNS; i++)
 	var offset = config.debug.enabled ? config.debug.channel_offset : 0;
 	lanterns[i] = new Lantern({
 		opc: client, 
+        debug_opc: debug_client,
 		emitter: emitter, 
 		channel: i + offset, 
 		tent_offset: tent_model[i],

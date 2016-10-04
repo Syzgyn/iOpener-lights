@@ -8,6 +8,7 @@ var Pattern = require('./patterns/pattern');
 var Lantern = function(settings)
 {
 	this.opc_client = settings.opc;
+    this.debug_client = settings.debug_opc;
 	this.channel = settings.channel;
 	this.emitter = settings.emitter;
 	this.patternEmitter = new EventEmitter();
@@ -130,6 +131,7 @@ Lantern.prototype.setPattern = function(pattern)
 
 Lantern.prototype.writePixels = function()
 {
+    this.debug_client.writePixels(this.pixelBuffer);
 	this.opc_client.writePixels(this.pixelBuffer);
 }
 
@@ -143,8 +145,9 @@ Lantern.prototype.mapPixels = function(shader)
     if (!this.opc_client.socket) {
         this.opc_client._reconnect();
     }
-    if (!this.opc_client.connected) {
-        return;
+
+    if (!this.debug_client.socket) {
+        this.debug_client._reconnect();
     }
 
     var offset = 4;
