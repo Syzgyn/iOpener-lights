@@ -39,7 +39,7 @@ colorWipe.prototype.update = function()
 	{
 		this.last_update = 0;
 		this.current_led++;
-		if(this.current_led >= 36)
+		if(this.current_led >= 64)
 		{
 			this.current_led = 0;
 			this.hue = (this.hue + Math.random() * 0.3 + 0.1) % 1;
@@ -75,28 +75,28 @@ colorWipe.prototype.convert = function(i)
 
 	if(this.direction == 1)
 	{
-		var x = i % 6;
-		var y = Math.floor(i / 6);
+		var x = i % 8;
+		var y = Math.floor(i / 8);
 	}
 
 	if(this.direction == 2 || this.direction == 3)
 	{
-		var y = i % 6;
-		var x = Math.floor(i / 6);
+		var y = i % 8;
+		var x = Math.floor(i / 8);
 	}
 
 	if(this.direction == 3 && x % 2 == 1)
 	{
-		y = 5 - y;
+		y = 7 - y;
 	}
 
 	if(y % 2 == 1)
 	{
-		return y * 6 + 5 - x;
+		return y * 8 + 7 - x;
 	}
 	else
 	{
-		return y * 6 + x; 
+		return y * 8 + x; 
 	}
 }
 

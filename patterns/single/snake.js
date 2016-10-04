@@ -71,8 +71,8 @@ Snake.prototype.initSnakes = function()
 
 	var snake = function(hue){
 		var self = this;
-		this.x = Math.randomInt(0,5);
-		this.y = Math.randomInt(0,5);
+		this.x = Math.randomInt(0,7);
+		this.y = Math.randomInt(0,7);
 		this.hue = hue;
 		this.body = [0,0,0,0,0,0];  //Keep body as a list of LED numbers, rather than X,Y coords
 									//To make it easier to check what should be illumnated
@@ -84,16 +84,16 @@ Snake.prototype.initSnakes = function()
 			{
 				//instead of using a bunch of if statements, just add 6 and then +/- 1 to the right coord, then modulus
 				case 0: //up
-					self.y = (self.y + 5) % 6;
+					self.y = (self.y + 7) % 8;
 					break;
 				case 1: //right
-					self.x = (self.x + 1) % 6;
+					self.x = (self.x + 7) % 8;
 					break;
 				case 2: //down
-					self.y = (self.y + 1) % 6;
+					self.y = (self.y + 7) % 8;
 					break;
 				case 3: //left
-					self.x = (self.x + 5) % 6;
+					self.x = (self.x + 7) % 8;
 					break;
 			}
 

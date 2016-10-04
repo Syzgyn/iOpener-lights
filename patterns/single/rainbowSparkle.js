@@ -11,13 +11,13 @@ var RainbowSparkle = function()
 	this.time_offset = 0;
 	this.random_offset = Math.random() * 100000 + 30000;
 	this.random_values = [];
-	this.num_leds = 36;
+	this.num_leds = 64;
 	
 	this.web_settings = {
 		name: "Rainbow + Sparkles",
 	};
 	
-	for(var i = 0; i < 36; i++)
+	for(var i = 0; i < 64; i++)
 	{
 		this.random_values.push(Math.random());
 	}
