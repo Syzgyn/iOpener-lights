@@ -1,5 +1,6 @@
 node_modules
 *.swp
+*.swo
 tests
 config.js
 config.ini
