@@ -88,7 +88,7 @@ Rings.prototype.update = function()
     this.centery = (this.noise(this.offset * this.wanderSpeed, 1.4) - 0.5) * 1.25;
     this.centerz = (this.noise(this.offset * this.wanderSpeed, 1.7) - 0.5) * 1.25;
 
-    console.debug(this.centerx, this.centery, this.centerz);
+    //console.debug(this.centerx, this.centery, this.centerz);
 }
 
 Rings.prototype.shader = function(coords, led_num, tent_coords)
