@@ -8,10 +8,10 @@ var Blinky = function()
 {
 	Blinky.super_.call(this);
 
-    this.decay = 0.99;
-    this.trigger = 0.008;
-    this.minTrigger = 0.2;
-    
+    this.decay = 0.995;
+    this.trigger = 0.006;
+    this.minTrigger = 0.15;
+
     this.numLanterns = this.appConfig.num_lanterns;
     this.lastRun = 0;
     this.lanterns = [];
