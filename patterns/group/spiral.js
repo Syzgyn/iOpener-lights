@@ -123,7 +123,7 @@ Spiral.prototype.shader = function(coords, led_num, tent_coords, lantern_num)
     }
 
     output.multiply(255);
-    
+
     // return output.array;
 
     //Add hue shifting

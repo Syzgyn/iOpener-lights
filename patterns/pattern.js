@@ -13,6 +13,7 @@ var Pattern = function(){
 	this.last_run = 0;				//Last time the pattern was rendered
 	this.use_gradient = false;		//If the pattern wants pixel transitions to be smooth
 	this.requested_pixel = [0,0,0]; //The latest requested pixel via getCurrentColor(num)
+    this.enabled = true;            //Set to false to ignore a pattern in the lineup
 
     this.appConfig = config;
 
@@ -23,6 +24,7 @@ var Pattern = function(){
 	this.settings = { 
 		fps: 30,
 	};
+
 
 	//Assign the requested pixel's rgb value
 	this.on('pixelValue', function(data){

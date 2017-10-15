@@ -20,10 +20,12 @@ var getFiles = function(path, pArr, nArr, recursive){
             var p = require(subpath);
             var instance = new p();
             var data = instance.getWebSettings();
-            pArr.push(p);
-            nArr.push(data.name);
+            if (instance.enabled) {
+                pArr.push(p);
+                nArr.push(data.name);
+            }
         }
-    });     
+    });
 }
 
 //Get all single patterns

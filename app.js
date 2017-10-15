@@ -39,6 +39,7 @@ for(var i = 0; i < NUM_LANTERNS; i++)
 		tent_offset: tent_model[i],
         layout_file: config.lantern_layout_file,
 	}); 
+
 	//lanterns[i].setPattern(pattern);
 }
 
