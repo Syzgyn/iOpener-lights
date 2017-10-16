@@ -8,7 +8,7 @@ config.patterns.group = {};
 
 config.num_lanterns = 1;
 config.tent_layout_file = 'layouts/tent32_small.json';
-config.lantern_layout_file = '/layouts/lantern_64sphere.json';
+config.lantern_layout_file = 'layouts/64_sphere.json';
 
 //Display debug messages, and use other debug settings
 config.debug.enabled = false;
@@ -18,7 +18,6 @@ config.debug.enabled = false;
 config.debug.channel_offset = 1;
 
 //For testing a pattern, forces the pattern controller to only use this index
-config.debug.restrict_pattern = false;
 config.debug.restrict_group_pattern = false;
 
 //time in ms between each lantern update
