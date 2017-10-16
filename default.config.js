@@ -31,8 +31,8 @@ config.controller_loop_timer = 1000;
 * All times are in number of controller_loop_timer ticks
 */
 //min and max duration for patterns 
-config.patterns.min = 20;
-config.patterns.max = 40;
+config.patterns.min = 100;
+config.patterns.max = 200;
 
 //time till first group pattern
 config.patterns.group.start_time = 100;

@@ -9,9 +9,10 @@ var Setup = function(settings)
     this.offset = 0;
 	this.speed = 10;//Math.randomInt(10,30);
     this.count = 0;
+this.enabled = this.appConfig.debug.enabled;
 
 	this.web_settings = {
-		name: "Test",
+		name: "!! Setup Pattern",
 		controls: [
 			{
 				type: 'slider',
