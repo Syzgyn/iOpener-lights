@@ -73,7 +73,7 @@ util.inherits(MonoSpiral, Pattern);
 
 MonoSpiral.prototype.update = function()
 {
-	this.offset += 0.02;
+	this.offset += 0.01;
     this.hue += 0.0001;
 }
 
@@ -92,7 +92,7 @@ MonoSpiral.prototype.shader = function(coords, led_num, tent_coords, lantern_num
     
     var s = 0.0;
 
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 20; i++) {
         var sin = new Vector([
             Math.sin(s - 3 * this.offset + 1.6),
             Math.sin(s - 3 * this.offset + 0)
@@ -104,7 +104,7 @@ MonoSpiral.prototype.shader = function(coords, led_num, tent_coords, lantern_num
 
     var result = new Vector([1,2,3]);//[256, 512, 768]);
     result.divide(s * s).multiply(500);
-    result.clamp(0, 254);
+    result.clamp(0, 250);
 
     var hsv = colorUtils.toHsv(result.array);
     return colorUtils.hsv(hsv[0] + this.hue, hsv[1], hsv[2]);

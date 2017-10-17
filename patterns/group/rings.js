@@ -68,11 +68,11 @@ util.inherits(Rings, Pattern);
 Rings.prototype.update = function()
 {
 	this.offset += (this.speed * 1000.0);
-    this.offset = new Date().getTime() * 1.0;
-    this.hue_offset += (this.hue_speed * 1.0);
+    this.offset = new Date().getTime() * 0.5;
+    this.hue_offset += (this.hue_speed * 0.5);
 
     this.angle = Math.sin(this.offset * 0.001);
-    this.hue = this.offset;
+    this.hue = this.offset * 2.0;
 
     this.saturation = Math.min(Math.max(Math.pow(1.15 * this.noise(this.offset * 0.000122), 2.5), 0), 1);
     this.spacing = this.noise(this.offset * 0.000124) * this.ringScale;

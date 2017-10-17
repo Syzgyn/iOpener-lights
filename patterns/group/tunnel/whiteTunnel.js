@@ -21,7 +21,7 @@ util.inherits(WhiteTunnel, Pattern);
 
 WhiteTunnel.prototype.update = function()
 {
-    this.offset += 0.05;
+    this.offset += 0.01;
     this.hue = (this.hue + 0.00005) % 1;
 }
 

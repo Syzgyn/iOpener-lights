@@ -6,6 +6,7 @@ var Rainbow = function()
 	Rainbow.super_.call(this);
 
 	this.channel_offset = 0.1;
+    this.enabled = false;
 }
 
 util.inherits(Rainbow, Pattern);

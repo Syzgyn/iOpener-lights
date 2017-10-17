@@ -7,7 +7,7 @@ var Pattern = require(patternRoot + 'pattern');
 var Bubbles = function()
 {
 	Bubbles.super_.call(this);
-
+    this.enabled = false;
 
     this.x_range = this.appConfig.coordBounds[0].max;
     this.y_range = this.appConfig.coordBounds[1].max;
@@ -32,7 +32,7 @@ Bubbles.prototype.update = function()
 Bubbles.prototype._smoothstep = function(x, y, a)
 {
     var t = colorUtils.clamp((a - x) / (y - x), 0.0, 1.0);
-    console.log(x, y, a, t)
+    //console.log(x, y, a, t)
     return t * t * (3.0 - 2.0 * t);
 }
 

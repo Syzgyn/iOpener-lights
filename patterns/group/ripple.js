@@ -7,7 +7,7 @@ var Ripple = function()
 	Ripple.super_.call(this);
 
 	this.hue = Math.random();
-	this.speed = Math.randomInt(10,60);
+	this.speed = 10;//Math.randomInt(10,60);
 	this.intensity = 15;//Math.randomInt(10,30);
 	this.falloff = 45;
 

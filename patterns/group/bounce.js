@@ -6,7 +6,7 @@ var Bounce = function()
 {
 	Bounce.super_.call(this);
 
-    this.numBalls = 10;
+    this.numBalls = 15;
 
     this.x_range = this.appConfig.coordBounds[0].max;
     this.y_range = this.appConfig.coordBounds[1].max;

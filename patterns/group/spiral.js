@@ -9,7 +9,7 @@ var Spiral = function()
 	Spiral.super_.call(this);
 
 	this.hue = Math.random();
-	this.speed = Math.randomInt(10,60);
+	this.speed = Math.randomInt(10,30);
 	this.intensity = 15;//Math.randomInt(10,30);
 	this.falloff = 45;
 
@@ -73,7 +73,7 @@ util.inherits(Spiral, Pattern);
 
 Spiral.prototype.update = function()
 {
-	this.offset += 0.05;
+	this.offset += (this.speed / 1000);//0.05;
     this.hue += 0.0001;
 }
 

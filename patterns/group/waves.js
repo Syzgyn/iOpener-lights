@@ -8,9 +8,9 @@ var Waves = function()
 
 	this.hue = 200;
     this.hue_speed = 0.1;
-	this.speed = 40;//Math.randomInt(10,60);
+	this.speed = 30;//Math.randomInt(10,60);
 	this.intensity = 15;//Math.randomInt(10,30);
-	this.falloff = 45;
+	this.falloff = 15;
 
     this.xCenter = Math.randomRange(-4.5, 4.5);
     this.yCenter = Math.randomRange(-10.5, 10.5);

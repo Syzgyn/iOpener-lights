@@ -7,6 +7,7 @@ var Pattern = require(patternRoot + 'pattern');
 var ZigzagTunnel = function()
 {
 	ZigzagTunnel.super_.call(this);
+    this.enabled = false;
 	
     this.web_settings = {
 		name: "Zigzag Tunnel"
@@ -25,7 +26,7 @@ util.inherits(ZigzagTunnel, Pattern);
 ZigzagTunnel.prototype.update = function()
 {
     this.offset += 0.01;
-    this.hue = (this.hue + 0.0001) % 1;
+    //this.hue = (this.hue + 0.0001) % 1;
 }
 
 ZigzagTunnel.prototype.shader = function(coords, led_num, tent_coords)
@@ -56,6 +57,11 @@ ZigzagTunnel.prototype.shader = function(coords, led_num, tent_coords)
     f.multiply(Vector.dot(z, z) * 0.3 - 2);
 
     f.multiply(255);
+
+    var hsv = colorUtils.toHsv(f.array);
+    hsv[0] = (hsv[0] + this.hue) % 1;
+
+    var rgb = colorUtils.hsv(hsv[0], hsv[1], hsv[2]);
 
     return f.array;
 }

@@ -9,7 +9,7 @@ var HypnoRipple = function()
 	HypnoRipple.super_.call(this);
 
 	this.hue = Math.random();
-	this.speed = Math.randomInt(10,60);
+	this.speed = Math.randomInt(10,20);
 	this.intensity = 15;//Math.randomInt(10,30);
 	this.falloff = 45;
 

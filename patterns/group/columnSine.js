@@ -13,7 +13,7 @@ var ColumnSine = function()
     this.columns = [];
     this.hue = Math.random();
 
-    this.speed = 0.02 + Math.randomRange(0, 0.02);
+    this.speed = 0.01 + Math.randomRange(0, 0.01);
 
 	this.web_settings = {
 		name: "ColumnSine",

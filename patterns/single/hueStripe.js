@@ -7,10 +7,10 @@ var Stripe = function(settings)
 	Stripe.super_.call(this, settings);
 
 	this.hue = Math.random();
-	this.speed = Math.randomInt(10,60);
+	this.speed = 10;//Math.randomInt(10,30);
 	this.direction = Math.randomInt(0,2);
 
-	this.range = 40;
+	this.range = 60;
 	this.swing = this.range / 2;
 
 	this.offset = 0;
