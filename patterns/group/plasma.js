@@ -1,5 +1,6 @@
 //https://www.shadertoy.com/view/MdXGDH
 //http://codingstudents.info/njmcode/oldskool-demoscene-plasma-fx-aOZpRO
+//http://web.archive.org/web/20170113183338/http://www.mennovanslooten.nl/blog/post/72
 
 var colorUtils = require(appRoot + 'libs/color_utils');
 var util = require('util');
